@@ -1,5 +1,5 @@
 namespace :css_sprite do
-  require 'rmagick'
+  require 'RMagick'
   
   CONFIG_PATH = RAILS_ROOT + '/config/'
   IMAGE_PATH = RAILS_ROOT + '/public/images/'
