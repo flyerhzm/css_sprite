@@ -1,0 +1,75 @@
+h1. css_sprite
+
+A rails plugin to generate css sprite.
+
+**************************************************************************
+
+h2. Install
+
+install rmagick gem first:
+<pre><code>
+sudo gem install rmagick
+</code></pre>
+
+install it as a plugin:
+<pre><code>
+script/plugin install git@github.com:flyerhzm/css_sprite.git
+</code></pre>
+
+**************************************************************************
+
+h2. Configuration
+
+add <code>config/css_sprite.yml</code>, define about compositing what images.
+<pre><code>
+forum_icon_vertical.gif:
+  sources:
+    - good_topic.gif
+    - mid_topic.gif
+    - unread_topic.gif
+    - sticky_topic.gif
+  orient: vertical
+  span: 20
+</code></pre>
+
+first line defines the destination image filename.
+sources is a list of source image filenames what want to composite.
+orient defines the composite gravity type, horizontal or vertical.
+span defines the span between two images.
+
+**************************************************************************
+
+h2. Usage
+
+just run rake task:
+<pre><code>
+rake css_sprite_build
+</code></pre>
+
+the result css is generated at <code>tmp/css_sprite.css</code>
+<pre><code>
+.good_topic
+  codebackgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 0px
+  codewidth: 20
+  codeheight: 19
+
+.mid_topic
+  codebackgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 39px
+  codewidth: 20
+  codeheight: 19
+
+.unread_topic
+  codebackgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 78px
+  codewidth: 19
+  codeheight: 18
+
+.sticky_topic
+  codebackgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 116px
+  codewidth: 19
+  codeheight: 18
+</code></pre>
+
+**************************************************************************
+
+
+Copyright (c) 2009 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
