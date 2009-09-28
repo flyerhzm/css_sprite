@@ -52,17 +52,14 @@ the result css is generated at <code>tmp/css_sprite.css</code>
     backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 0px
     width: 20px
     height: 19px
-
 .mid_topic
     backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 39px
     width: 20px
     height: 19px
-
 .unread_topic
     backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 78px
     width: 19px
     height: 18px
-
 .sticky_topic
     backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 116px
     width: 19px
