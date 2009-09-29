@@ -33,9 +33,9 @@ forum_icon_vertical.gif:
 </code></pre>
 
 first line defines the destination image filename.
-sources is a list of source image filenames what want to composite.
-orient defines the composite gravity type, horizontal or vertical.
-span defines the span between two images.
+<code>sources<code> is a list of source image filenames what want to composite. They are parsed by <code>Dir.glob</code>.
+<code>orient</code> defines the composite gravity type, horizontal or vertical. Default is 'vertical'.
+<code>span</code> defines the span between two images. Default is 0.
 
 **************************************************************************
 
