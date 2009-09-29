@@ -1,8 +1,6 @@
-namespace :css_sprite do
-  require File.join(File.dirname(__FILE__), '../lib/css_sprite')
-  
+namespace :css_sprite do  
   desc "buid css sprite image"
   task :build do
-    CssSprite.new.build
+    Sprite.new.build
   end
 end
