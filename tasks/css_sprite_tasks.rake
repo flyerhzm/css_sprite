@@ -11,19 +11,20 @@ namespace :css_sprite do
     sprite_config = File.open(CONFIG_PATH + 'css_sprite.yml') {|f| YAML::load(f)}
     sprite_config.each do |dest, configs|
       results = []
-      sources = configs['sources']
+      sources = configs['sources'].collect {|source| Dir.glob(IMAGE_PATH + source)}.flatten
+      span = configs['span'] || 0
       dest_image = get_image(sources.shift)
       results << image_properties(dest_image).merge(:x => 0, :y => 0)
-      configs['sources'].each do |source|
+      sources.each do |source|
         source_image = get_image(source)
         if configs['orient'] == 'horizontal'
           gravity = Magick::EastGravity
-          x = dest_image.columns + configs['span']
+          x = dest_image.columns + span
           y = 0
         else
           gravity = Magick::SouthGravity
           x = 0
-          y = dest_image.rows + configs['span']
+          y = dest_image.rows + span
         end
         results << image_properties(source_image).merge(:x => x, :y => y)
         dest_image = composite_images(dest_image, source_image, x, y)
@@ -55,7 +56,7 @@ namespace :css_sprite do
   end
   
   def get_image(image_filename)
-    image = Magick::Image::read(IMAGE_PATH + image_filename).first
+    image = Magick::Image::read(image_filename).first
   end
   
   def image_properties(image)
