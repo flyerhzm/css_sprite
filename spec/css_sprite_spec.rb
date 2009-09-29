@@ -33,9 +33,4 @@ describe CssSprite do
       @sprite.image_properties(image).should == {:name => nil, :width => 20, :height => 38}
     end
   end
-  
-  context "output_css" do
-    it "should output css" do
-    end
-  end
 end
