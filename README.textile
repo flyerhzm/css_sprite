@@ -1,6 +1,6 @@
 h1. css_sprite
 
-A rails plugin/gem to generate css sprite automatically.
+A rails plugin/gem to generate css sprite images automatically.
 
 **************************************************************************
 
@@ -35,7 +35,7 @@ forum_icon_vertical.gif:  # destination image file
     - unread_topic.gif
     - sticky_topic.gif
   orient: vertical        # composite gravity, vertical or horizontal
-  span: 20                # span of space between two images
+  span: 5                 # span of space between two images
 </code></pre>
 
 first line defines the destination image filename.
@@ -67,15 +67,15 @@ the result css is generated at <code>tmp/css_sprite.css</code>
     width: 20px
     height: 19px
 .mid_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 39px
+    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 24px
     width: 20px
     height: 19px
 .unread_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 78px
+    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 48px
     width: 19px
     height: 18px
 .sticky_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 116px
+    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 71px
     width: 19px
     height: 18px
 </code></pre>
