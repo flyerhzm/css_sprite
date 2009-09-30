@@ -28,20 +28,22 @@ h2. Configuration
 
 add <code>config/css_sprite.yml</code>, define about compositing what images.
 <pre><code>
-forum_icon_vertical.gif:
-  sources:
+forum_icon_vertical.gif:  # destination image file
+  sources:                # source image file list
     - good_topic.gif
     - mid_topic.gif
     - unread_topic.gif
     - sticky_topic.gif
-  orient: vertical
-  span: 20
+  orient: vertical        # composite gravity, vertical or horizontal
+  span: 20                # span of space between two images
 </code></pre>
 
 first line defines the destination image filename.
 <code>sources</code> is a list of source image filenames what want to composite. They are parsed by <code>Dir.glob</code>.
 <code>orient</code> defines the composite gravity type, horizontal or vertical. Default is 'vertical'.
 <code>span</code> defines the span between two images. Default is 0.
+
+you can define any number of destination image files.
 
 **************************************************************************
 
