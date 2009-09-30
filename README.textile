@@ -1,6 +1,6 @@
 h1. css_sprite
 
-A rails plugin to generate css sprite.
+A rails plugin/gem to generate css sprite automatically.
 
 **************************************************************************
 
@@ -11,7 +11,13 @@ install rmagick gem first:
 sudo gem install rmagick
 </code></pre>
 
-install it as a plugin:
+install it as a gem:
+<pre><code>
+sudo gem sources -a http://gemcutter.org
+sudo gem install css_sprite
+</code></pre>
+
+or install it as a plugin:
 <pre><code>
 script/plugin install git@github.com:flyerhzm/css_sprite.git
 </code></pre>
@@ -41,7 +47,13 @@ first line defines the destination image filename.
 
 h2. Usage
 
-just run rake task:
+if you use it as a gem, add a task <code>lib/tasks/css_sprite.rake</code> first:
+<pre><code>
+require 'css_sprite'
+</code></pre>
+if you use it as a plugin, ignore the step above.
+
+then just run rake task:
 <pre><code>
 rake css_sprite_build
 </code></pre>
