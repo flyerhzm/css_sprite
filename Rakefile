@@ -19,4 +19,5 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.authors = ["Richard Huang"]
   gemspec.files.exclude '.gitignore'
 end
+Jeweler::GemcutterTasks.new
 
