@@ -11,7 +11,18 @@ install rmagick gem first:
 sudo gem install rmagick
 </code></pre>
 
+if you have any problems with the rmagick gem, install imagemagick via macports first:
+
+<pre><code>
+sudo port install libxml2
+sudo port install ImageMagick  
+</code></pre>
+
+or via installer: <a href="http://github.com/maddox/magick-installer/tree/master">http://github.com/maddox/magick-installer/tree/master</a>
+
+
 install it as a gem:
+
 <pre><code>
 sudo gem sources -a http://gemcutter.org
 sudo gem install css_sprite
@@ -57,27 +68,31 @@ if you use it as a plugin, ignore the step above.
 
 then just run rake task:
 <pre><code>
-rake css_sprite_build
+rake css_sprite:build
 </code></pre>
 
-the result css is generated at <code>tmp/css_sprite.css</code>
+the result css is generated at <code>public/stylesheets/css_sprite.css</code>
 <pre><code>
-.good_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 0px
-    width: 20px
-    height: 19px
-.mid_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 24px
-    width: 20px
-    height: 19px
-.unread_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 48px
-    width: 19px
-    height: 18px
-.sticky_topic
-    backgound: url('/images/forum_icon_vertical.gif') no-repeat 0px 71px
-    width: 19px
-    height: 18px
+.good_topic {
+    background: url('../images/forum_icon_vertical.gif') no-repeat 0px 0px;
+    width: 20px;
+    height: 19px;
+}
+.mid_topic {
+    background: url('/images/forum_icon_vertical.gif') no-repeat 0px 24px
+    width: 20px;
+    height: 19px;
+}
+.unread_topic {
+    background: url('/images/forum_icon_vertical.gif') no-repeat 0px 48px;
+    width: 19px;
+    height: 18px;
+}
+.sticky_topic {
+    background: url('/images/forum_icon_vertical.gif') no-repeat 0px 71px;
+    width: 19px;
+    height: 18px;
+}
 </code></pre>
 
 **************************************************************************
