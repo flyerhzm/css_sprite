@@ -4,6 +4,7 @@ class Sprite
   CONFIG_PATH = RAILS_ROOT + '/config/'
   IMAGE_PATH = RAILS_ROOT + '/public/images/'
   TEMP_PATH = RAILS_ROOT + '/tmp/'
+  PUBLIC_PATH = RAILS_ROOT + '/public/stylesheets/'
   
   def initialize
     @output = {}
@@ -43,14 +44,14 @@ class Sprite
   end
   
   def output_css
-    File.open(TEMP_PATH + 'css_sprite.css', 'w') do |f|
+    File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
       @output.each do |dest, results|
         results.each do |result|
-          f.puts ".#{result[:name]}"
-          f.puts "\tbackgound: url('/images/#{dest}') no-repeat #{result[:x]}px #{result[:y]}px"
-          f.puts "\twidth: #{result[:width]}px"
-          f.puts "\theight: #{result[:height]}px"
-          f.puts ""
+          f.puts ".#{result[:name]} \{ "
+          f.puts "\tbackground: url('../images/#{dest}') no-repeat #{result[:x]}px #{result[:y]}px;"
+          f.puts "\twidth: #{result[:width]}px;"
+          f.puts "\theight: #{result[:height]}px;"
+          f.puts "\}"
         end
       end
     end
