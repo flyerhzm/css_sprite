@@ -30,7 +30,7 @@ sudo gem install css_sprite
 
 or install it as a plugin:
 <pre><code>
-script/plugin install git@github.com:flyerhzm/css_sprite.git
+script/plugin install git://github.com/flyerhzm/css_sprite.git
 </code></pre>
 
 **************************************************************************
@@ -74,7 +74,7 @@ rake css_sprite:build
 the result css is generated at <code>public/stylesheets/css_sprite.css</code>
 <pre><code>
 .good_topic {
-    background: url('../images/forum_icon_vertical.gif') no-repeat 0px 0px;
+    background: url('/images/forum_icon_vertical.gif') no-repeat 0px 0px;
     width: 20px;
     height: 19px;
 }
@@ -94,6 +94,12 @@ the result css is generated at <code>public/stylesheets/css_sprite.css</code>
     height: 18px;
 }
 </code></pre>
+
+**************************************************************************
+
+h2. Contributor
+
+josedelcorral - fix the style of generated css
 
 **************************************************************************
 
