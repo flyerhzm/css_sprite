@@ -3,7 +3,6 @@ require 'RMagick'
 class Sprite  
   CONFIG_PATH = RAILS_ROOT + '/config/'
   IMAGE_PATH = RAILS_ROOT + '/public/images/'
-  TEMP_PATH = RAILS_ROOT + '/tmp/'
   PUBLIC_PATH = RAILS_ROOT + '/public/stylesheets/'
   
   def initialize
