@@ -13,9 +13,9 @@ class Sprite
     sprite_config = File.open(CONFIG_PATH + 'css_sprite.yml') {|f| YAML::load(f)}
     sprite_config.each do |dest, configs|
       output_image(dest, configs)
+      output_css configs
     end
     
-    output_css
   end
   
   def output_image(dest, configs)
@@ -42,11 +42,11 @@ class Sprite
     dest_image.write(IMAGE_PATH + dest)
   end
   
-  def output_css
+  def output_css config
     File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
       @output.each do |dest, results|
         results.each do |result|
-          f.puts ".#{result[:name]} \{ "
+          f.puts ".#{config['prefix']}#{result[:name]} \{ "
           f.puts "\tbackground: url('/images/#{dest}') no-repeat #{result[:x]}px #{result[:y]}px;"
           f.puts "\twidth: #{result[:width]}px;"
           f.puts "\theight: #{result[:height]}px;"

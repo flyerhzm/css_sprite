@@ -47,12 +47,14 @@ forum_icon_vertical.gif:  # destination image file
     - sticky_topic.gif
   orient: vertical        # composite gravity, vertical or horizontal
   span: 5                 # span of space between two images
+  prefix: "s-"            # css class prefix
 </code></pre>
 
 first line defines the destination image filename.
 <code>sources</code> is a list of source image filenames what want to composite. They are parsed by <code>Dir.glob</code>.
 <code>orient</code> defines the composite gravity type, horizontal or vertical. Default is 'vertical'.
 <code>span</code> defines the span between two images. Default is 0.
+<code>prefix</code> defines a prefix for the generated css classes, to avoid conflicts with your own css classes.
 
 you can define any number of destination image files.
 
