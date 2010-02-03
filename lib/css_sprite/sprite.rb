@@ -59,9 +59,9 @@ class Sprite
   def composite_images(dest_image, src_image, x, y)
     width = [src_image.columns + x, dest_image.columns].max
     height = [src_image.rows + y, dest_image.rows].max
-    image = Magick::Image.new(width, height)
-    image.composite!(dest_image, 0, 0, Magick::AddCompositeOp)
-    image.composite!(src_image, x, y, Magick::AddCompositeOp)
+    image = Magick::Image.new(width, height) {self.background_color = 'none'}
+    image.composite!(dest_image, 0, 0, Magick::CopyCompositeOp)
+    image.composite!(src_image, x, y, Magick::CopyCompositeOp)
     image
   end
   
