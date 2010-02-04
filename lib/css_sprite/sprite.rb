@@ -23,7 +23,7 @@ class Sprite
     sources = configs['sources'].collect {|source| Dir.glob(IMAGE_PATH + source)}.flatten
     span = configs['span'] || 0
     dest_image = get_image(sources.shift)
-    results << image_properties(dest_image).merge(:x => 0, :y => 0)
+    results << image_properties(dest_image).merge(:x => 0, :y => 0, :prefix => configs['prefix'])
     sources.each do |source|
       source_image = get_image(source)
       if configs['orient'] == 'horizontal'
