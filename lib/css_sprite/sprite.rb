@@ -44,6 +44,7 @@ class Sprite
   
   def output_css
     File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
+      f.puts "/* do not touch - generated through 'rake css_sprite:build' */"
       @output.each do |dest, results|
         basename = File.basename(dest, File.extname(dest))
         f.puts ".#{results.first[:prefix]}#{basename} { background: url('/images/#{dest}?#{Time.now.to_i}') no-repeat; }"
