@@ -45,9 +45,10 @@ class Sprite
   def output_css
     File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
       @output.each do |dest, results|
+        f.puts ".#{result[:prefix]}#{basename} { background: url('/images/#{dest}') no-repeat; }"
         results.each do |result|
           f.puts ".#{result[:prefix]}#{result[:name]} \{ "
-          f.puts "\tbackground: url('/images/#{dest}') no-repeat #{result[:x]}px #{result[:y]}px;"
+          f.puts "\tbackground: #{result[:x]}px #{result[:y]}px;"
           f.puts "\twidth: #{result[:width]}px;"
           f.puts "\theight: #{result[:height]}px;"
           f.puts "\}"
