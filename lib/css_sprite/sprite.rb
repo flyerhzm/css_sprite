@@ -45,7 +45,7 @@ class Sprite
   def output_css
     File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
       @output.each do |dest, results|
-        f.puts ".#{result[:prefix]}#{basename} { background: url('/images/#{dest}') no-repeat; }"
+        f.puts ".#{result[:prefix]}#{basename} { background: url('/images/#{dest}?#{Time.now.to_i}') no-repeat; }"
         results.each do |result|
           f.puts ".#{result[:prefix]}#{result[:name]} \{ "
           f.puts "\tbackground: #{result[:x]}px #{result[:y]}px;"
