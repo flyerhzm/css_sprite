@@ -102,6 +102,7 @@ the result css is generated at <code>public/stylesheets/css_sprite.css</code>
 h2. Contributor
 
 josedelcorral - fix the style of generated css
+Santino - fix transparent images
 
 **************************************************************************
 

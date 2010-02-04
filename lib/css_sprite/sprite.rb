@@ -13,8 +13,8 @@ class Sprite
     sprite_config = File.open(CONFIG_PATH + 'css_sprite.yml') {|f| YAML::load(f)}
     sprite_config.each do |dest, configs|
       output_image(dest, configs)
-      output_css configs
-    end
+    end  
+    output_css
     
   end
   
@@ -35,18 +35,18 @@ class Sprite
         x = 0
         y = dest_image.rows + span
       end
-      results << image_properties(source_image).merge(:x => x, :y => y)
+      results << image_properties(source_image).merge(:x => x, :y => y, :prefix => configs['prefix'])
       dest_image = composite_images(dest_image, source_image, x, y)
     end
     @output[dest] = results
     dest_image.write(IMAGE_PATH + dest)
   end
   
-  def output_css config
+  def output_css
     File.open(PUBLIC_PATH + 'css_sprite.css', 'w') do |f|
       @output.each do |dest, results|
         results.each do |result|
-          f.puts ".#{config['prefix']}#{result[:name]} \{ "
+          f.puts ".#{result[:prefix]}#{result[:name]} \{ "
           f.puts "\tbackground: url('/images/#{dest}') no-repeat #{result[:x]}px #{result[:y]}px;"
           f.puts "\twidth: #{result[:width]}px;"
           f.puts "\theight: #{result[:height]}px;"
