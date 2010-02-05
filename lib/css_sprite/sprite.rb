@@ -49,11 +49,11 @@ class Sprite
         basename = File.basename(dest, File.extname(dest))
         f.puts ".#{results.first[:prefix]}#{basename} { background: url('/images/#{dest}?#{Time.now.to_i}') no-repeat; }"
         results.each do |result|
-          f.print ".#{result[:prefix]}#{result[:name]} \{ "
-          f.print "background-position: #{-result[:x]}px #{-result[:y]}px;"
-          f.print "width: #{result[:width]}px;"
-          f.print "height: #{result[:height]}px;"
-          f.print "\}\n"
+          f.print ".#{result[:prefix]}#{result[:name]} \{"
+          f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
+          f.print " width: #{result[:width]}px;"
+          f.print " height: #{result[:height]}px;"
+          f.print " \}\n"
         end
       end
     end
