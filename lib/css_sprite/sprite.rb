@@ -1,5 +1,5 @@
-require 'RMagick'
 require 'find'
+require 'RMagick'
 
 class Sprite
   
@@ -12,6 +12,17 @@ class Sprite
   def build
     directories = css_sprite_directories
     directories.each { |directory| output_image(directory) }
+    output_css
+  end
+  
+  def check
+    directories = css_sprite_directories
+    directories.each do |directory|
+      dest_css_path = dest_css_path(directory)
+      if !File.exist?(dest_css_path) or File.new(directory).mtime > File.new(dest_css_path).mtime
+        output_image(directory)
+      end
+    end
     output_css
   end
   
@@ -44,16 +55,24 @@ class Sprite
 
   def output_css
     @todo.each do |directory, results|
-      dest_image_name = dest_image_name(directory)
-      dest_css_path = dest_css_path(directory)
-      File.open(dest_css_path, 'w') do |f|
-        results.each do |result|
-          f.print ".#{result[:name]} \{"
-          f.print " background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat;"
-          f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
-          f.print " width: #{result[:width]}px;"
-          f.print " height: #{result[:height]}px;"
-          f.print " \}\n"
+      unless results.empty?
+        dest_image_name = dest_image_name(directory)
+        dest_css_path = dest_css_path(directory)
+        File.open(dest_css_path, 'w') do |f|
+          class_names = []
+          results.each_slice(5) do |batch_results|
+            class_names << batch_results.collect { |result| ".#{result[:name]}" }.join(', ')
+          end
+          f.print class_names.join(",\n")
+          f.print " \{\n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat;\n\}\n"
+        
+          results.each do |result|
+            f.print ".#{result[:name]} \{"
+            f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
+            f.print " width: #{result[:width]}px;"
+            f.print " height: #{result[:height]}px;"
+            f.print " \}\n"
+          end
         end
       end
     end
