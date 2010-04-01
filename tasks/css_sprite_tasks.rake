@@ -8,8 +8,9 @@ namespace :css_sprite do
   desc "start css sprite server"
   task :start do
     if RUBY_PLATFORM.include?('mswin32')
-      exec "start "
-      puts "css_sprite server started sucessfully."
+      # exec "start "
+      # puts "css_sprite server started sucessfully."
+      puts "not support windows yet."
     else
       file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
       if File.exists?(file_path)
@@ -30,8 +31,9 @@ namespace :css_sprite do
   desc "stop css sprite server"
   task :stop do
     if RUBY_PLATFORM.include?('mswin32')
-      exec "taskkill "
-      puts "css_sprite server shutdown sucessfully."
+      # exec "taskkill "
+      # puts "css_sprite server shutdown sucessfully."
+      puts "not support windows yet."
     else
       file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
       if File.exists?(file_path)

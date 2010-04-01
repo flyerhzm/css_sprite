@@ -2,29 +2,22 @@ h1. css_sprite
 
 A rails plugin/gem to generate css sprite images automatically.
 
+*************************************************************************
+
+h2. Notice
+
+I have rewritten the plugin. Please check out the gem version >= 1.2.0
+
 **************************************************************************
 
 h2. Install
 
-install rmagick gem first:
-<pre><code>
-sudo gem install rmagick
-</code></pre>
-
-if you have any problems with the rmagick gem, install imagemagick via macports first:
-
-<pre><code>
-sudo port install libxml2
-sudo port install ImageMagick  
-</code></pre>
-
-or via installer: <a href="http://github.com/maddox/magick-installer/tree/master">http://github.com/maddox/magick-installer/tree/master</a>
+css_sprite is dependent on the RMagick gem, please install it first.
 
 
 install it as a gem:
 
 <pre><code>
-sudo gem sources -a http://gemcutter.org
 sudo gem install css_sprite
 </code></pre>
 
@@ -37,52 +30,79 @@ script/plugin install git://github.com/flyerhzm/css_sprite.git
 
 h2. Configuration
 
-add <code>config/css_sprite.yml</code>, define about compositing what images.
+There is no need to create a configuration if you do not use sass and you do not do any customization.
+
+
+You can create <code>config/css_sprite.yml</code> to define the customization.
+
+For css
 <pre><code>
-forum_icon_vertical.gif:  # destination image file
-  sources:                # source image file list
-    - good_topic.gif
-    - mid_topic.gif
-    - unread_topic.gif
-    - sticky_topic.gif
-  orient: vertical        # composite gravity, vertical or horizontal
-  span: 5                 # span of space between two images
-  prefix: "v-"            # css class prefix
+suffix:
+  button: |
+    text-indent: -9999px;
+    display: block;
+    cursor: pointer;
+    font-size: 0;
+    line-height: 15px;
+    border: 0;
+    outline: 0;
+
+  icon: |
+    text-indent: -9999px;
+    cursor: pointer;
 </code></pre>
 
-first line defines the destination image filename.
-<code>sources</code> is a list of source image filenames what want to composite. They are parsed by <code>Dir.glob</code>.
-<code>orient</code> defines the composite gravity type, horizontal or vertical. Default is 'vertical'.
-<code>span</code> defines the span between two images. Default is 0.
-<code>prefix</code> defines a prefix for the generated css classes, to avoid conflicts with your own css classes.
+For sass
+<pre><code>
+engine: sass
+suffix:
+  button: |
+    text-indent: -9999px
+    display: block
+    cursor: pointer
+    font-size: 0
+    line-height: 15px
+    border: 0
+    outline: 0
 
-you can define any number of destination image files.
+  icon: |
+    text-indent: -9999px
+    cursor: pointer
+</code></pre>
+
+<code>engine</code> defines css (default) or sass to generate.
+<code>suffix</code> defines the customization styles for specified images. 
+The customization above means if your image's suffix is button (e.g. post_button.png), it contains the additional style with (outline: 0 and so on),
+if your image's suffix is icon (e.g. twitter_icon.png), it contains the additional style with (text-indent: -9999px and so on)
 
 **************************************************************************
 
 h2. Usage
 
-if you use it as a gem, add a task <code>lib/tasks/css_sprite.rake</code> first:
+1. create a <code>css_sprite</code> directory or css_sprite suffixed directory (e.g. widget_css_sprite) under <code>public/images</code>
+
+2. define <code>config/css_sprite.yml</code> or not
+
+3. start css_sprite server <code>rake css_sprite:start</code>
+
+4. put any images you want to do css sprite into the css_sprite directory
+
+5. then css_sprite image will be automatically generated and css_sprite.css or css_sprite.sass are generated too.
+
+****************************************************************************
+
+h2. Task
+
 <pre><code>
 require 'css_sprite'
 </code></pre>
 if you use it as a plugin, ignore the step above.
 
 then just run rake task:
-<pre><code>
-rake css_sprite:build
-</code></pre>
+<code>rake css_sprite:start</code>, start css_sprite server
+<code>rake css_sprite:stop</code>, stop css_sprite server
+<code>rake css_sprite:build</code>, build css_sprite once
 
-the result css is generated at <code>public/stylesheets/css_sprite.css</code>
-<pre><code>
-/* do not touch - generated through 'rake css_sprite:build' */
-.v-forum_icon_vertical { background: url('/images/forum_icon_vertical.gif?1265358559') no-repeat; }
-.v-good_topic { background-position: 0px 0px; width: 20px; height: 19px; }
-.v-mid_topic { background-position: 0px -29px; width: 20px; height: 19px; }
-.v-sticky_topic { background-position: 0px -58px; width: 19px; height: 18px; }
-.v-unread_topic { background-position: 0px -86px; width: 19px; height: 18px; }
-.v-plectix_logo { background-position: 0px -114px; width: 125px; height: 47px; }
-</code></pre>
 
 **************************************************************************
 
