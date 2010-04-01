@@ -35,7 +35,11 @@ describe Sprite do
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon.png'),
                          File.join(IMAGE_PATH, 'css_sprite/hotmail_logo.png'),
                          File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')]
-      @sprite.all_images(File.join(IMAGE_PATH, 'css_sprite')).should == expected_images
+      actual_images = @sprite.all_images(File.join(IMAGE_PATH, 'css_sprite'))
+      actual_images.size.should == expected_images.size
+      expected_images.each do |expected_image|
+        actual_images.should be_include(expected_image)
+      end
     end
   end
   
