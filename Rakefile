@@ -18,6 +18,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.homepage = "" 
   gemspec.authors = ["Richard Huang"]
   gemspec.files.exclude '.gitignore'
+  gemspec.add_dependency 'rmagick'
 end
 Jeweler::GemcutterTasks.new
 
