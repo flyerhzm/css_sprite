@@ -12,16 +12,15 @@ I have rewritten the plugin. Please check out the gem version >= 1.3.0
 
 h2. Install
 
-css_sprite is dependent on the RMagick gem, please install it first.
+css_sprite is dependent on the <code>rmagick</code> gem, please install it first.
 
 
-install it as a gem:
-
+install css_sprite as a gem:
 <pre><code>
 sudo gem install css_sprite
 </code></pre>
 
-or install it as a plugin:
+or install css_sprite as a plugin:
 <pre><code>
 script/plugin install git://github.com/flyerhzm/css_sprite.git
 </code></pre>
@@ -30,12 +29,13 @@ script/plugin install git://github.com/flyerhzm/css_sprite.git
 
 h2. Configuration
 
-There is no need to create a configuration if you do not use sass and you do not do any customization.
+There is no need to create any configuration if you do not use sass and you do not want any customization.
 
+But you can create <code>config/css_sprite.yml</code> to define the customization.
 
-You can create <code>config/css_sprite.yml</code> to define the customization.
+h3. Examples
 
-For css
+* For css
 <pre><code>
 suffix:
   button: |
@@ -52,7 +52,7 @@ suffix:
     cursor: pointer;
 </code></pre>
 
-For sass
+* For sass
 <pre><code>
 engine: sass
 suffix:
@@ -72,14 +72,14 @@ suffix:
 
 <code>engine</code> defines css (default) or sass to generate.
 <code>suffix</code> defines the customization styles for specified images. 
-The customization above means if your image's suffix is button (e.g. post_button.png), it contains the additional style with (outline: 0 and so on),
-if your image's suffix is icon (e.g. twitter_icon.png), it contains the additional style with (text-indent: -9999px and so on)
+The customization above means if suffix of your image filename is button (e.g. post_button.png), it contains the additional style with (outline: 0; border: 0; and so on),
+if suffix of your image filename is icon (e.g. twitter_icon.png), it contains the additional style with (text-indent: -9999px; cursor: pointer)
 
 **************************************************************************
 
 h2. Usage
 
-1. create a <code>css_sprite</code> directory or css_sprite suffixed directory (e.g. widget_css_sprite) under <code>public/images</code>
+1. create a <code>css_sprite</code> directory or css_sprite suffixed directory (e.g. widget_css_sprite) under <code>public/images/</code>
 
 2. define <code>config/css_sprite.yml</code> or not
 
@@ -89,27 +89,9 @@ h2. Usage
 
 5. then css_sprite image will be automatically generated and css_sprite.css or css_sprite.sass are generated too.
 
-****************************************************************************
+You can stop top the css_sprite server by <code>rake css_sprite:stop</code>
 
-h2. Task
-
-<pre><code>
-require 'css_sprite'
-</code></pre>
-if you use it as a plugin, ignore the step above.
-
-then just run rake task:
-<code>rake css_sprite:start</code>, start css_sprite server
-<code>rake css_sprite:stop</code>, stop css_sprite server
-<code>rake css_sprite:build</code>, build css_sprite once
-
-
-**************************************************************************
-
-h2. Contributor
-
-josedelcorral - fix the style of generated css
-Santino - fix transparent images and make the generated css file more graceful
+Or you just want to do css sprite manually <code>rake css_sprite:build</code>
 
 **************************************************************************
 
