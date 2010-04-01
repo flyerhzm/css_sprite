@@ -7,17 +7,16 @@ namespace :css_sprite do
   
   desc "start css sprite server"
   task :start do
-    if RUBY_PLATFORM.include?('mswin32')
-      # exec "start "
-      # puts "css_sprite server started sucessfully."
-      puts "not support windows yet."
+    automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
+    if RUBY_PLATFORM =~ /win|w32/
+      exec "start \"css_sprite\" ruby.exe #{automatic_script}"
+      puts "css_sprite server started sucessfully."
     else
       file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
       if File.exists?(file_path)
         puts "css_sprite server is started. I haven't done anything."
       else
         pid = fork do
-          automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
           exec "ruby #{automatic_script}"
         end
       
@@ -30,10 +29,9 @@ namespace :css_sprite do
   
   desc "stop css sprite server"
   task :stop do
-    if RUBY_PLATFORM.include?('mswin32')
-      # exec "taskkill "
-      # puts "css_sprite server shutdown sucessfully."
-      puts "not support windows yet."
+    if RUBY_PLATFORM =~ /win|w32/
+      exec "taskkill /im ruby.exe /fi \"Windowtitle eq css_sprite\""
+      puts "css_sprite server shutdown sucessfully."
     else
       file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
       if File.exists?(file_path)
