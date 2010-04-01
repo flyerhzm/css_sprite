@@ -1,29 +1,56 @@
 require 'find'
 require 'RMagick'
+require 'yaml'
 
 class Sprite
   
-  def initialize
+  def initialize(options={})
     @image_path = File.join(Rails.root, 'public/images')
     @stylesheet_path = File.join(Rails.root, 'public/stylesheets')
     @todo = {}
+    
+    if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
+      @config = YAML::load_file(File.join(Rails.root, 'config/css_sprite.yml'))
+    else
+      @config = options
+    end
   end
   
   def build
     directories = css_sprite_directories
     directories.each { |directory| output_image(directory) }
-    output_css
+    output_stylesheet
   end
   
   def check
     directories = css_sprite_directories
     directories.each do |directory|
-      dest_css_path = dest_css_path(directory)
-      if !File.exist?(dest_css_path) or File.new(directory).mtime > File.new(dest_css_path).mtime
+      if expire?(directory)
         output_image(directory)
       end
     end
-    output_css
+    output_stylesheet
+  end
+  
+  def expire?(directory)
+    if sass?
+      stylesheet_path = dest_sass_path(directory)
+    else
+      stylesheet_path = dest_css_path(directory)
+    end
+    !File.exist?(stylesheet_path) or File.new(directory).mtime > File.new(stylesheet_path).mtime
+  end
+  
+  def output_stylesheet
+    if sass?
+      output_sass
+    else
+      output_css
+    end
+  end
+  
+  def sass?
+    @config['engine'] == 'sass'
   end
   
   def css_sprite_directories
@@ -59,11 +86,19 @@ class Sprite
         dest_image_name = dest_image_name(directory)
         dest_css_path = dest_css_path(directory)
         File.open(dest_css_path, 'w') do |f|
-          class_names = []
-          results.each_slice(5) do |batch_results|
-            class_names << batch_results.collect { |result| ".#{result[:name]}" }.join(', ')
+          if @config['suffix']
+            @config['suffix'].each do |key, value|
+              cns = class_names(results, :suffix => key)
+              unless cns.empty?
+                f.print cns.join(",\n")
+                f.print " \{\n"
+                f.print value.split("\n").collect { |text| "  " + text }.join("\n")
+                f.print "\}\n"
+              end
+            end
           end
-          f.print class_names.join(",\n")
+          
+          f.print class_names(results).join(",\n")
           f.print " \{\n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat;\n\}\n"
         
           results.each do |result|
@@ -76,6 +111,48 @@ class Sprite
         end
       end
     end
+  end
+  
+  def output_sass
+    @todo.each do |directory, results|
+      unless results.empty?
+        dest_image_name = dest_image_name(directory)
+        dest_sass_path = dest_sass_path(directory)
+        File.open(dest_sass_path, 'w') do |f|
+          if @config['suffix']
+            @config['suffix'].each do |key, value|
+              cns = class_names(results, :suffix => key)
+              unless cns.empty?
+                f.print cns.join(",\n")
+                f.print "\n"
+                f.print value.split("\n").collect { |text| "  " + text }.join("\n")
+                f.print "\n"
+              end
+            end
+          end
+          
+          f.print class_names(results).join(",\n")
+          f.print " \n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat\n"
+        
+          results.each do |result|
+            f.print ".#{result[:name]}\n"
+            f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
+            f.print "  width: #{result[:width]}px\n"
+            f.print "  height: #{result[:height]}px\n"
+          end
+        end
+      end
+    end
+  end
+  
+  def class_names(results, options={})
+    options = {:count_per_line => 5}.merge(options)
+    class_names = []
+    results = results.select { |result| result[:name] =~ %r|#{options[:suffix]}$| } if options[:suffix]
+    results.each_slice(options[:count_per_line]) do |batch_results|
+      class_names << batch_results.collect { |result| ".#{result[:name]}" }.join(', ')
+    end
+    class_names
   end
   
   def all_images(directory)
@@ -98,6 +175,10 @@ class Sprite
   
   def dest_css_path(directory)
     File.join(@stylesheet_path, File.basename(directory) + '.css')
+  end
+
+  def dest_sass_path(directory)
+    File.join(@stylesheet_path, 'sass', File.basename(directory) + '.sass')
   end
   
   def composite_images(dest_image, src_image, x, y)

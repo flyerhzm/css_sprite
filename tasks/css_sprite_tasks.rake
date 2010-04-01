@@ -11,14 +11,19 @@ namespace :css_sprite do
       exec "start "
       puts "css_sprite server started sucessfully."
     else
-      pid = fork do
-        automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
-        exec "ruby #{automatic_script}"
-      end
+      file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
+      if File.exists?(file_path)
+        puts "css_sprite server is started. I haven't done anything."
+      else
+        pid = fork do
+          automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
+          exec "ruby #{automatic_script}"
+        end
       
-      sleep(1)
-      File.open("#{Rails.root}/tmp/pids/css_sprite.pid", "w") { |f| f << pid }
-      puts "css_sprite server started sucessfully."
+        sleep(1)
+        File.open("#{Rails.root}/tmp/pids/css_sprite.pid", "w") { |f| f << pid }
+        puts "css_sprite server started sucessfully."
+      end
     end
   end
   

@@ -9,6 +9,10 @@ describe Sprite do
     it "should build css_sprite image and css" do
       @sprite.build
     end
+    
+    it "should build css_sprite image and sass" do
+      Sprite.new(:engine => :sass).build
+    end
   end
   
   describe "css_sprite_directories" do
@@ -35,6 +39,25 @@ describe Sprite do
     end
   end
   
+  describe "class_names" do
+    before(:all) do
+      @results = [{:name => 'gmail_logo'}, {:name => 'hotmail_logo'}, {:name => 'yahoo_logo'}, 
+                 {:name => 'gmail_button'}, {:name => 'hotmail_button'}, {:name => 'yahoo_button'}]
+    end
+    
+    it "should get class_names with default options" do
+      @sprite.class_names(@results).should == [".gmail_logo, .hotmail_logo, .yahoo_logo, .gmail_button, .hotmail_button", ".yahoo_button"]
+    end
+
+    it "should get class_names with 3 count_per_line" do
+      @sprite.class_names(@results, :count_per_line => 3).should == [".gmail_logo, .hotmail_logo, .yahoo_logo", ".gmail_button, .hotmail_button, .yahoo_button"]
+    end
+    
+    it "should get specified class_names with suffix" do
+      @sprite.class_names(@results, :suffix => 'logo').should == [".gmail_logo, .hotmail_logo, .yahoo_logo"]
+    end
+  end
+  
   describe "dest_image_path" do
     it "should get css_sprite image path for a directory" do
       @sprite.dest_image_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(IMAGE_PATH, 'css_sprite.png')
@@ -50,6 +73,12 @@ describe Sprite do
   describe "dest_css_path" do
     it "should get css_sprite css path for a directory" do
       @sprite.dest_css_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.css')
+    end
+  end
+
+  describe "dest_sass_path" do
+    it "should get sass_sprite css path for a directory" do
+      @sprite.dest_sass_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'sass', 'css_sprite.sass')
     end
   end
   
