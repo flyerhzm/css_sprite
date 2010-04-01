@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{css_sprite}
-  s.version = "1.1.0"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Richard Huang"]
-  s.date = %q{2010-02-05}
+  s.date = %q{2010-04-01}
   s.description = %q{css_sprite is a rails plugin/gem to generate css sprite image automatically.}
   s.email = %q{flyerhzm@gmail.com}
   s.extra_rdoc_files = [
@@ -24,8 +24,6 @@ Gem::Specification.new do |s|
      "lib/css_sprite.rb",
      "lib/css_sprite/sprite.rb",
      "spec/css_sprite/sprite_spec.rb",
-     "spec/resources/good_topic.gif",
-     "spec/resources/mid_topic.gif",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "tasks/css_sprite_tasks.rake"
@@ -33,7 +31,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{css_sprite is a rails plugin/gem to generate css sprite image automatically.}
   s.test_files = [
     "spec/css_sprite/sprite_spec.rb",
@@ -45,9 +43,12 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rmagick>, [">= 0"])
     else
+      s.add_dependency(%q<rmagick>, [">= 0"])
     end
   else
+    s.add_dependency(%q<rmagick>, [">= 0"])
   end
 end
 
