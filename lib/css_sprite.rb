@@ -1,3 +1,4 @@
+require 'css_sprite/sprite'
 require 'rake'
 
 unless Rake::Task.task_defined? "css_sprite:build"

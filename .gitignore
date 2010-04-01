@@ -1,1 +1,4 @@
 pkg/**
+spec/public/images/css_sprite.png
+spec/public/stylesheets/*.css
+spec/public/stylesheets/sass/*.sass
