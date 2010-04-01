@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{css_sprite}
-  s.version = "1.2.0"
+  s.version = "1.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Richard Huang"]
@@ -21,9 +21,16 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "css_sprite.gemspec",
+     "lib/automatic.rb",
      "lib/css_sprite.rb",
      "lib/css_sprite/sprite.rb",
      "spec/css_sprite/sprite_spec.rb",
+     "spec/public/images/css_sprite/.DS_Store",
+     "spec/public/images/css_sprite/gmail_logo.png",
+     "spec/public/images/css_sprite/hotmail_logo.png",
+     "spec/public/images/css_sprite/icons/facebook_icon.png",
+     "spec/public/images/css_sprite/icons/twitter_icon.png",
+     "spec/public/images/css_sprite/not_image.txt",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "tasks/css_sprite_tasks.rake"
