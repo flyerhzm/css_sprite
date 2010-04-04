@@ -92,4 +92,10 @@ if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondi
 
 **************************************************************************
 
+h2. Best Practices
+
+I have written a post "css sprite best practices":http://www.huangzhimin.com/entries/190-css-sprite-best-practices to introduce the idea that the css_sprite gem follows.
+
+**************************************************************************
+
 Copyright (c) 2009 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
