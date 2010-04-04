@@ -38,7 +38,7 @@ If you install it as a plugin, you can skip this step
 4. put any images which you need to do the css sprite under the css_sprite directory, then you will see the automatically generated css sprite image and css files.
 
 5. include the stylesheet in your view page
-<pre><code><%= stylesheet_link_tag 'css_sprite' %>
+<pre><code><%= stylesheet_link_tag 'css_sprite' %></code></pre>
 
 You can stop the css_sprite server by <code>rake css_sprite:stop</code>
 
