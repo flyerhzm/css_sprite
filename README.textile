@@ -63,7 +63,6 @@ suffix:
     line-height: 15px;
     border: 0;
     outline: 0;
-
   icon: |
     text-indent: -9999px;
     cursor: pointer;
@@ -81,7 +80,6 @@ suffix:
     line-height: 15px
     border: 0
     outline: 0
-
   icon: |
     text-indent: -9999px
     cursor: pointer
