@@ -15,7 +15,7 @@ Jeweler::Tasks.new do |gemspec|
   gemspec.summary = "css_sprite is a rails plugin/gem to generate css sprite image automatically."
   gemspec.description = "css_sprite is a rails plugin/gem to generate css sprite image automatically."
   gemspec.email = "flyerhzm@gmail.com"
-  gemspec.homepage = "" 
+  gemspec.homepage = "http://github.com/flyerhzm/css_sprite" 
   gemspec.authors = ["Richard Huang"]
   gemspec.files.exclude '.gitignore'
   gemspec.add_dependency 'rmagick'
