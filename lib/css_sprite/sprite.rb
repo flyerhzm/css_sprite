@@ -6,8 +6,8 @@ require 'enumerator'
 class Sprite
   
   def initialize(options={})
-    @image_path = File.join(Rails.root, 'public/images')
-    @stylesheet_path = File.join(Rails.root, 'public/stylesheets')
+    @image_path = File.expand_path(File.join(Rails.root, 'public/images'))
+    @stylesheet_path = File.expand_path(File.join(Rails.root, 'public/stylesheets'))
     @todo = {}
     
     if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
@@ -67,13 +67,13 @@ class Sprite
     span = 5
     unless sources.empty?
       dest_image = get_image(sources.shift)
-      results << image_properties(dest_image).merge(:x => 0, :y => 0)
+      results << image_properties(dest_image, directory).merge(:x => 0, :y => 0)
       sources.each do |source|
         source_image = get_image(source)
         gravity = Magick::SouthGravity
         x = 0
         y = dest_image.rows + span
-        results << image_properties(source_image).merge(:x => x, :y => y)
+        results << image_properties(source_image, directory).merge(:x => x, :y => y)
         dest_image = composite_images(dest_image, source_image, x, y)
       end
       dest_image.image_type = Magick::PaletteMatteType
@@ -104,7 +104,7 @@ class Sprite
           f.print " \{\n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat;\n\}\n"
         
           results.each do |result|
-            f.print ".#{result[:name]} \{"
+            f.print "#{class_name(result[:name])} \{"
             f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
             f.print " width: #{result[:width]}px;"
             f.print " height: #{result[:height]}px;"
@@ -137,7 +137,7 @@ class Sprite
           f.print " \n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat\n"
         
           results.each do |result|
-            f.print ".#{result[:name]}\n"
+            f.print "#{class_name(result[:name])}\n"
             f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
             f.print "  width: #{result[:width]}px\n"
             f.print "  height: #{result[:height]}px\n"
@@ -152,9 +152,13 @@ class Sprite
     class_names = []
     results = results.select { |result| result[:name] =~ %r|#{options[:suffix]}$| } if options[:suffix]
     results.each_slice(options[:count_per_line]) do |batch_results|
-      class_names << batch_results.collect { |result| ".#{result[:name]}" }.join(', ')
+      class_names << batch_results.collect { |result| class_name(result[:name]) }.join(', ')
     end
     class_names
+  end
+  
+  def class_name(name)
+    ".#{name.gsub('/', ' .')}"
   end
   
   def all_images(directory)
@@ -196,8 +200,10 @@ class Sprite
     Magick::Image::read(image_filename).first
   end
   
-  def image_properties(image)
-    {:name => File.basename(image.filename, File.extname(image.filename)), :width => image.columns, :height => image.rows}
+  def image_properties(image, directory)
+    directory_length = directory.length + 1
+    extname_length = File.extname(image.filename).length
+    {:name => image.filename.slice(directory_length...-extname_length), :width => image.columns, :height => image.rows}
   end
     
 end

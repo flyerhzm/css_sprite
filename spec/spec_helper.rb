@@ -8,6 +8,6 @@ class Rails
   end
 end
 
-IMAGE_PATH = File.join(Rails.root, 'public/images')
-STYLESHEET_PATH = File.join(Rails.root, 'public/stylesheets')
+IMAGE_PATH = File.expand_path(File.join(Rails.root, 'public/images'))
+STYLESHEET_PATH = File.expand_path(File.join(Rails.root, 'public/stylesheets'))
 require File.join(File.dirname(__FILE__), '/../lib/css_sprite.rb')
