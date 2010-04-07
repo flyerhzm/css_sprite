@@ -42,6 +42,8 @@ If you install it as a plugin, you can skip this step
 
 You can stop the css_sprite server by <code>rake css_sprite:stop</code>
 
+You can restart the css_sprite server by <code>rake css_sprite:start</code>
+
 Or you can just do the css sprite manually by <code>rake css_sprite:build</code>
 
 **************************************************************************
