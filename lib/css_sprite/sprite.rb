@@ -87,6 +87,7 @@ class Sprite
       unless results.empty?
         dest_image_name = dest_image_name(directory)
         dest_css_path = dest_css_path(directory)
+        dest_image_time = File.new(dest_image_path(directory)).mtime
         File.open(dest_css_path, 'w') do |f|
           if @config['suffix']
             @config['suffix'].each do |key, value|
@@ -101,7 +102,7 @@ class Sprite
           end
           
           f.print class_names(results).join(",\n")
-          f.print " \{\n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
         
           results.each do |result|
             f.print "#{class_name(result[:name])} \{"
@@ -120,6 +121,7 @@ class Sprite
       unless results.empty?
         dest_image_name = dest_image_name(directory)
         dest_sass_path = dest_sass_path(directory)
+        dest_image_time = File.new(dest_image_path(directory)).mtime
         File.open(dest_sass_path, 'w') do |f|
           if @config['suffix']
             @config['suffix'].each do |key, value|
@@ -134,7 +136,7 @@ class Sprite
           end
           
           f.print class_names(results).join(",\n")
-          f.print " \n  background: url('/images/#{dest_image_name}?#{Time.now.to_i}') no-repeat\n"
+          f.print " \n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
         
           results.each do |result|
             f.print "#{class_name(result[:name])}\n"
