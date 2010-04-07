@@ -8,8 +8,9 @@ class Rails
   end
 end
 
+sprite = Sprite.new
 loop do
   sleep 1
   
-  Sprite.new.check
+  sprite.check
 end
