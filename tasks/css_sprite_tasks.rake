@@ -6,6 +6,9 @@ namespace :css_sprite do
     require File.join(File.dirname(__FILE__), '../lib/css_sprite/sprite.rb')
     Sprite.new.build
   end
+
+  desc "restart css sprite server"
+  task :restart => [:stop, :start]
   
   desc "start css sprite server"
   task :start do
