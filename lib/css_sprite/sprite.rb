@@ -160,7 +160,7 @@ class Sprite
   end
   
   def class_name(name)
-    ".#{name.gsub('/', ' .')}"
+    ".#{name.gsub('/', ' .').sub(/[_-]hover$/, ':hover')}"
   end
   
   def all_images(directory)

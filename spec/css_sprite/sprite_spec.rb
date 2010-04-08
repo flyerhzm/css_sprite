@@ -12,7 +12,7 @@ describe Sprite do
     end
     
     it "should build css_sprite image and sass" do
-      Sprite.new(:engine => :sass).build
+      Sprite.new('engine' => 'sass').build
     end
   end
   
@@ -34,6 +34,7 @@ describe Sprite do
     it "should read all images from a directory" do
       expected_images = [File.join(IMAGE_PATH, 'css_sprite/icons/twitter_icon.png'),
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon.png'),
+                         File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon_hover.png'),
                          File.join(IMAGE_PATH, 'css_sprite/hotmail_logo.png'),
                          File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')]
       actual_images = @sprite.all_images(File.join(IMAGE_PATH, 'css_sprite'))
@@ -60,6 +61,23 @@ describe Sprite do
     
     it "should get specified class_names with suffix" do
       @sprite.class_names(@results, :suffix => 'logo').should == [".gmail_logo, .hotmail_logo, .yahoo_logo"]
+    end
+  end
+  
+  describe "class_name" do
+    it "should get class_name with simple name" do
+      @sprite.class_name("twitter_icon").should == ".twitter_icon"
+    end
+    
+    it "should get class_name with parent class" do
+      @sprite.class_name("icons/twitter_icon").should == ".icons .twitter_icon"
+    end
+    
+    it "should get class_name with hover class" do
+      @sprite.class_name("icons/twitter_icon_hover").should == ".icons .twitter_icon:hover"
+      @sprite.class_name("icons/twitter-icon-hover").should == ".icons .twitter-icon:hover"
+      @sprite.class_name("twitter_hover_icon").should == ".twitter_hover_icon"
+      @sprite.class_name("twitter_hover_icon_hover").should == ".twitter_hover_icon:hover"
     end
   end
   

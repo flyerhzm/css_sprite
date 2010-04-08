@@ -113,6 +113,14 @@ In practice, we may use the same class under different parent classes to display
 | icons/twitter_icon.png | .icons .twitter_icon |
 | widget/icons/twitter_icon.png | .widget .icons .twitter_icon |
 
+h3. Hover selectors
+
+Hover selector is another frequently-used css technique. css_sprite gem uses the "_hover" and "-hover" suffix to detect it.
+
+| images under css_sprite directory | class name in css_sprite css |
+| twitter_icon_hover.png | .twitter_icon:hover |
+| twitter-icon-hover.png | .twitter-icon:hover |
+
 **************************************************************************
 
 Copyright (c) 2009 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
