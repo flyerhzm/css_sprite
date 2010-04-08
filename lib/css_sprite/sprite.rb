@@ -40,7 +40,13 @@ class Sprite
     else
       stylesheet_path = dest_css_path(directory)
     end
-    !File.exist?(stylesheet_path) or File.new(directory).mtime > File.new(stylesheet_path).mtime
+    return true unless File.exist?(stylesheet_path)
+    stylesheet_mtime = File.new(stylesheet_path).mtime
+    Dir["**/*"].each do |path|
+      # it is a directory
+      return true if path !~ /.*\..*/ and File.new(path).mtime > stylesheet_mtime
+    end
+    return false
   end
   
   def output_stylesheet(directory, results)
