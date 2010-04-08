@@ -8,7 +8,6 @@ class Sprite
   def initialize(options={})
     @image_path = File.expand_path(File.join(Rails.root, 'public/images'))
     @stylesheet_path = File.expand_path(File.join(Rails.root, 'public/stylesheets'))
-    @todo = {}
     
     if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
       @config = YAML::load_file(File.join(Rails.root, 'config/css_sprite.yml'))
@@ -19,18 +18,20 @@ class Sprite
   
   def build
     directories = css_sprite_directories
-    directories.each { |directory| output_image(directory) }
-    output_stylesheet
+    directories.each { |directory| execute(directory) }
   end
   
   def check
     directories = css_sprite_directories
-    directories.each do |directory|
-      if expire?(directory)
-        output_image(directory)
-      end
+    directories.each { |directory| execute(directory) if expire?(directory) }
+  end
+  
+  def execute(directory)
+    results = output_image(directory)
+    unless results.empty?
+      optimize_image(directory)
+      output_stylesheet(directory, results)
     end
-    output_stylesheet
   end
   
   def expire?(directory)
@@ -42,11 +43,11 @@ class Sprite
     !File.exist?(stylesheet_path) or File.new(directory).mtime > File.new(stylesheet_path).mtime
   end
   
-  def output_stylesheet
+  def output_stylesheet(directory, results)
     if sass?
-      output_sass
+      output_sass(directory, results)
     else
-      output_css
+      output_css(directory, results)
     end
   end
   
@@ -76,74 +77,74 @@ class Sprite
         results << image_properties(source_image, directory).merge(:x => x, :y => y)
         dest_image = composite_images(dest_image, source_image, x, y)
       end
-      dest_image.image_type = Magick::PaletteMatteType
       dest_image.write(dest_image_path)
     end
-    @todo[directory] = results
+    results
+  end
+  
+  def optimize_image(directory)
+    dest_image_path = dest_image_path(directory)
+    @config['optimization'] ? system("#{@config['optimization']} #{dest_image_path}") : system("optipng -quiet #{dest_image_path}")
   end
 
-  def output_css
-    @todo.each do |directory, results|
-      unless results.empty?
-        dest_image_name = dest_image_name(directory)
-        dest_css_path = dest_css_path(directory)
-        dest_image_time = File.new(dest_image_path(directory)).mtime
-        File.open(dest_css_path, 'w') do |f|
-          if @config['suffix']
-            @config['suffix'].each do |key, value|
-              cns = class_names(results, :suffix => key)
-              unless cns.empty?
-                f.print cns.join(",\n")
-                f.print " \{\n"
-                f.print value.split("\n").collect { |text| "  " + text }.join("\n")
-                f.print "\}\n"
-              end
+  def output_css(directory, results)
+    unless results.empty?
+      dest_image_name = dest_image_name(directory)
+      dest_css_path = dest_css_path(directory)
+      dest_image_time = File.new(dest_image_path(directory)).mtime
+      File.open(dest_css_path, 'w') do |f|
+        if @config['suffix']
+          @config['suffix'].each do |key, value|
+            cns = class_names(results, :suffix => key)
+            unless cns.empty?
+              f.print cns.join(",\n")
+              f.print " \{\n"
+              f.print value.split("\n").collect { |text| "  " + text }.join("\n")
+              f.print "\}\n"
             end
           end
-          
-          f.print class_names(results).join(",\n")
-          f.print " \{\n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        end
         
-          results.each do |result|
-            f.print "#{class_name(result[:name])} \{"
-            f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
-            f.print " width: #{result[:width]}px;"
-            f.print " height: #{result[:height]}px;"
-            f.print " \}\n"
-          end
+        f.print class_names(results).join(",\n")
+        f.print " \{\n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+      
+        results.each do |result|
+          f.print "#{class_name(result[:name])} \{"
+          f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
+          f.print " width: #{result[:width]}px;"
+          f.print " height: #{result[:height]}px;"
+          f.print " \}\n"
         end
       end
     end
   end
   
-  def output_sass
-    @todo.each do |directory, results|
-      unless results.empty?
-        dest_image_name = dest_image_name(directory)
-        dest_sass_path = dest_sass_path(directory)
-        dest_image_time = File.new(dest_image_path(directory)).mtime
-        File.open(dest_sass_path, 'w') do |f|
-          if @config['suffix']
-            @config['suffix'].each do |key, value|
-              cns = class_names(results, :suffix => key)
-              unless cns.empty?
-                f.print cns.join(",\n")
-                f.print "\n"
-                f.print value.split("\n").collect { |text| "  " + text }.join("\n")
-                f.print "\n"
-              end
+  def output_sass(directory, results)
+    unless results.empty?
+      dest_image_name = dest_image_name(directory)
+      dest_sass_path = dest_sass_path(directory)
+      dest_image_time = File.new(dest_image_path(directory)).mtime
+      File.open(dest_sass_path, 'w') do |f|
+        if @config['suffix']
+          @config['suffix'].each do |key, value|
+            cns = class_names(results, :suffix => key)
+            unless cns.empty?
+              f.print cns.join(",\n")
+              f.print "\n"
+              f.print value.split("\n").collect { |text| "  " + text }.join("\n")
+              f.print "\n"
             end
           end
-          
-          f.print class_names(results).join(",\n")
-          f.print " \n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
+        end
         
-          results.each do |result|
-            f.print "#{class_name(result[:name])}\n"
-            f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
-            f.print "  width: #{result[:width]}px\n"
-            f.print "  height: #{result[:height]}px\n"
-          end
+        f.print class_names(results).join(",\n")
+        f.print " \n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
+      
+        results.each do |result|
+          f.print "#{class_name(result[:name])}\n"
+          f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
+          f.print "  width: #{result[:width]}px\n"
+          f.print "  height: #{result[:height]}px\n"
         end
       end
     end

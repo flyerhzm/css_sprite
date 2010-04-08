@@ -27,6 +27,7 @@ css_sprite css is the css file automatically generated under public/stylesheets 
 h2. Install
 
 css_sprite depends on the <code>rmagick</code> gem, please make sure RMagick is successfully installed on your system.
+css_sprite also depends on the <code>optipng</code> tool as default image optimization, but you can use any other image optimization tool, check the Configuration section. If you use the default optipng tool, please make sure it is successfully installed on your system.
 
 install css_sprite as a gem:
 <pre><code>sudo gem install css_sprite</code></pre>
@@ -64,9 +65,19 @@ Or you can just do the css sprite manually by <code>rake css_sprite:build</code>
 
 h2. Configuration
 
-There is no need to create any configuration by default. If you want to use sass or you want to define common styles for some related classes, you need to define <code>config/css_sprite.yml</code> file.
+There is no need to create any configuration by default. If you want some customizations as follows, you need to define <code>config/css_sprite.yml</code> file.
 
-h3. Examples
+h3. Sass
+
+<pre><code>engine:sass</code></pre>
+
+h3. Image Optimization
+
+css_sprite use *optipng* with optimization level 2 to optimize the auto generated css_sprite image. You can change it to any image optimization command.
+
+<pre><code>optimization: optipng -o 7</code></pre>
+
+h3. Customization styles
 
 * For css
 <pre><code>

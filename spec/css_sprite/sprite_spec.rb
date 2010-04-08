@@ -14,6 +14,10 @@ describe Sprite do
     it "should build css_sprite image and sass" do
       Sprite.new('engine' => 'sass').build
     end
+    
+    it "should build another image optimization" do
+      Sprite.new('optimization' => "optipng -o 1").build
+    end
   end
   
   describe "css_sprite_directories" do
