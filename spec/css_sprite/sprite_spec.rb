@@ -37,6 +37,7 @@ describe Sprite do
   describe "all_images" do
     it "should read all images from a directory" do
       expected_images = [File.join(IMAGE_PATH, 'css_sprite/icons/twitter_icon.png'),
+                         File.join(IMAGE_PATH, 'css_sprite/icons/twitter_icon_hover.png'),
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon.png'),
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon_hover.png'),
                          File.join(IMAGE_PATH, 'css_sprite/hotmail_logo.png'),

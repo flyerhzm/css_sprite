@@ -118,8 +118,8 @@ class Sprite
         results.each do |result|
           f.print "#{class_name(result[:name])} \{"
           f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
-          f.print " width: #{result[:width]}px;"
-          f.print " height: #{result[:height]}px;"
+          f.print " width: #{result[:width]}px;" if result[:width]
+          f.print " height: #{result[:height]}px;" if result[:height]
           f.print " \}\n"
         end
       end
@@ -150,8 +150,8 @@ class Sprite
         results.each do |result|
           f.print "#{class_name(result[:name])}\n"
           f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
-          f.print "  width: #{result[:width]}px\n"
-          f.print "  height: #{result[:height]}px\n"
+          f.print "  width: #{result[:width]}px\n" if result[:width]
+          f.print "  height: #{result[:height]}px\n" if result[:height]
         end
       end
     end
@@ -213,7 +213,20 @@ class Sprite
   def image_properties(image, directory)
     directory_length = directory.length + 1
     extname_length = File.extname(image.filename).length
-    {:name => image.filename.slice(directory_length...-extname_length), :width => image.columns, :height => image.rows}
+    name = image.filename.slice(directory_length...-extname_length)
+    without = false
+    if hover?(name)
+      not_hover_file = image.filename.sub(/[_-]hover\./, '.')
+      if File.exist?(not_hover_file)
+        not_hover_image = get_image(not_hover_file)
+        without = true if image.columns == not_hover_image.columns and image.rows == not_hover_image.rows
+      end
+    end
+    without ? {:name => name} : {:name => name, :width => image.columns, :height => image.rows}
+  end
+
+  def hover?(name)
+    name =~ /[_-]hover/
   end
     
 end
