@@ -4,6 +4,14 @@ automatically css sprite.
 
 *************************************************************************
 
+h2. Best Practices
+
+I have written posts "css sprite best practices" to introduce the idea that the css_sprite gem follows.
+"english version":http://www.huangzhimin.com/entries/190-css-sprite-best-practices
+"chinese version":http://www.huangzhimin.com/entries/189-css-sprite-best-practices
+
+**************************************************************************
+
 h2. What css_sprite does?
 
 css sprite generates css_sprite image and css files automatically for you follow the conventions as follows.
@@ -116,14 +124,6 @@ suffix:
 <code>suffix</code> defines the customization styles for specified images. 
 The customization above means if your image filename is button suffixed (e.g. post_button.png), the corresponding class .post_button has the additional style with (outline: 0; border: 0; and so on),
 if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondiing class .twitter_icon has the additional style with (text-indent: -9999px; cursor: pointer)
-
-**************************************************************************
-
-h2. Best Practices
-
-I have written posts "css sprite best practices" to introduce the idea that the css_sprite gem follows.
-"english version":http://www.huangzhimin.com/entries/190-css-sprite-best-practices
-"chinese version":http://www.huangzhimin.com/entries/189-css-sprite-best-practices
 
 **************************************************************************
 
