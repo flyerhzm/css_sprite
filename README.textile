@@ -75,13 +75,23 @@ h2. Configuration
 
 There is no need to create any configuration by default. If you want some customizations as follows, you need to define <code>config/css_sprite.yml</code> file.
 
+h3. ImageType
+
+css_sprite uses RMagick to compose the images by default. It uses PaletteMatteType as default image_type, you can change it to any image_type which RMagick supports.
+
+<pre><code>image_type: PaletteType</code></pre>
+
+Check the detailed information of image_type here: http://www.imagemagick.org/RMagick/doc/constants.html#ImageType
+
 h3. Sass
+
+css_sprite generates css file by default. If you like sass, you can just add following line in the configuration file.
 
 <pre><code>engine:sass</code></pre>
 
 h3. Image Optimization
 
-css_sprite use *optipng* with optimization level 2 to optimize the auto generated css_sprite image. You can change it to any image optimization command.
+css_sprite uses *optipng* with optimization level 2 to optimize the auto generated css_sprite image by default. You can change it to any image optimization command.
 
 <pre><code>optimization: optipng -o 7</code></pre>
 

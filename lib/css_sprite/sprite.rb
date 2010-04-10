@@ -83,7 +83,7 @@ class Sprite
         results << image_properties(source_image, directory).merge(:x => x, :y => y)
         dest_image = composite_images(dest_image, source_image, x, y)
       end
-      dest_image.image_type = Magick::PaletteMatteType
+      dest_image.image_type = @config['image_type'] ? Magick.const_get(@config['image_type']) : Magick::PaletteMatteType
       dest_image.write(dest_image_path)
     end
     results

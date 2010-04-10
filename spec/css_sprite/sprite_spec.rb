@@ -15,6 +15,10 @@ describe Sprite do
       Sprite.new('engine' => 'sass').build
     end
     
+    it "should build another image_type" do
+      Sprite.new('image_type' => 'PaletteType').build
+    end
+    
     it "should build another image optimization" do
       Sprite.new('optimization' => "optipng -o 1").build
     end
