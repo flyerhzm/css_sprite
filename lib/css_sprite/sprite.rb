@@ -90,8 +90,12 @@ class Sprite
   end
   
   def optimize_image(directory)
-    dest_image_path = dest_image_path(directory)
-    @config['optimization'] ? system("#{@config['optimization']} #{dest_image_path}") : system("optipng -quiet #{dest_image_path}")
+    unless @config['disable_optimization']
+      dest_image_path = dest_image_path(directory)
+      command  = @config['optimization'] ? "#{@config['optimization']} #{dest_image_path}" : "optipng -quiet #{dest_image_path}"
+      result = system(command)
+      puts %Q(Optimization command "#{command}" execute failed) unless result
+    end
   end
 
   def output_css(directory, results)

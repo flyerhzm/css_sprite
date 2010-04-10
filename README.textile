@@ -95,6 +95,10 @@ css_sprite uses *optipng* with optimization level 2 to optimize the auto generat
 
 <pre><code>optimization: optipng -o 7</code></pre>
 
+You can also disable the image optimization by
+
+<pre><code>disable_optimization: true</code></pre>
+
 h3. Customization styles
 
 * For css

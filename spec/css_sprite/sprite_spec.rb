@@ -19,6 +19,10 @@ describe Sprite do
       Sprite.new('image_type' => 'PaletteType').build
     end
     
+    it "should disable image optimization" do
+      Sprite.new('disable_optimization' => true).build
+    end
+    
     it "should build another image optimization" do
       Sprite.new('optimization' => "optipng -o 1").build
     end
