@@ -8,14 +8,17 @@ describe Sprite do
   
   describe "build" do
     it "should build css_sprite image and css" do
-      @sprite.build
+      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
+      Sprite.new.build
     end
     
     it "should build css_sprite image and sass" do
+      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('engine' => 'sass').build
     end
     
     it "should build another image_type" do
+      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('image_type' => 'PaletteType').build
     end
     
@@ -24,6 +27,7 @@ describe Sprite do
     end
     
     it "should build another image optimization" do
+      Sprite.any_instance.expects(:system).with("optipng -o 1 #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('optimization' => "optipng -o 1").build
     end
   end

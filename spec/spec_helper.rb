@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spec/autorun'
 require 'date'
+require 'mocha'
 
 class Rails
   def self.root
