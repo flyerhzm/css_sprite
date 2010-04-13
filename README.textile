@@ -25,6 +25,8 @@ css sprite generates css_sprite image and css files automatically for you follow
 | widget/icons/twitter_icon.png | .widget .icons .twitter_icon |
 | twitter_icon_hover.png | .twitter_icon:hover |
 | twitter-icon-hover.png | .twitter-icon:hover |
+| logos_hover/gmail_logo.png | .logos:hover .gmail_logo |
+| logos-hover/gmail-logo.png | .logos:hover .gmail-logo |
 
 css_sprite directory is the directory whose name is "css_sprite" or "css_sprite" suffixed under public/images directory.
 css_sprite image is the image file automatically generated under public/images directory.

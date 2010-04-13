@@ -53,7 +53,9 @@ describe Sprite do
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon.png'),
                          File.join(IMAGE_PATH, 'css_sprite/icons/facebook_icon_hover.png'),
                          File.join(IMAGE_PATH, 'css_sprite/hotmail_logo.png'),
-                         File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')]
+                         File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png'),
+                         File.join(IMAGE_PATH, 'css_sprite/logos_hover/gmail_logo.png'),
+                         File.join(IMAGE_PATH, 'css_sprite/logos/gmail_logo.png')]
       actual_images = @sprite.all_images(File.join(IMAGE_PATH, 'css_sprite'))
       actual_images.size.should == expected_images.size
       expected_images.each do |expected_image|
@@ -95,6 +97,7 @@ describe Sprite do
       @sprite.class_name("icons/twitter-icon-hover").should == ".icons .twitter-icon:hover"
       @sprite.class_name("twitter_hover_icon").should == ".twitter_hover_icon"
       @sprite.class_name("twitter_hover_icon_hover").should == ".twitter_hover_icon:hover"
+      @sprite.class_name("logos_hover/gmail_logo").should == ".logos:hover .gmail_logo"
     end
   end
   

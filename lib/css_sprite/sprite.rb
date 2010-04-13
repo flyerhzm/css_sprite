@@ -172,7 +172,7 @@ class Sprite
   end
   
   def class_name(name)
-    ".#{name.gsub('/', ' .').sub(/[_-]hover$/, ':hover')}"
+    ".#{name.gsub('/', ' .').sub(/[_-]hover\b/, ':hover')}"
   end
   
   def all_images(directory)
@@ -220,7 +220,7 @@ class Sprite
     name = image.filename.slice(directory_length...-extname_length)
     without = false
     if hover?(name)
-      not_hover_file = image.filename.sub(/[_-]hover\./, '.')
+      not_hover_file = image.filename.sub(/[_-]hover\./, '.').sub(/[_-]hover\//, '/')
       if File.exist?(not_hover_file)
         not_hover_image = get_image(not_hover_file)
         without = true if image.columns == not_hover_image.columns and image.rows == not_hover_image.rows
@@ -230,7 +230,7 @@ class Sprite
   end
 
   def hover?(name)
-    name =~ /[_-]hover$/
+    name =~ /[_-]hover$|[_-]hover\//
   end
     
 end
