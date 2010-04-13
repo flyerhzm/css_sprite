@@ -230,7 +230,7 @@ class Sprite
   end
 
   def hover?(name)
-    name =~ /[_-]hover/
+    name =~ /[_-]hover$/
   end
     
 end
