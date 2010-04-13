@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{css_sprite}
-  s.version = "1.4.4"
+  s.version = "1.4.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Richard Huang"]
@@ -32,6 +32,8 @@ Gem::Specification.new do |s|
      "spec/public/images/css_sprite/icons/facebook_icon_hover.png",
      "spec/public/images/css_sprite/icons/twitter_icon.png",
      "spec/public/images/css_sprite/icons/twitter_icon_hover.png",
+     "spec/public/images/css_sprite/logos/gmail_logo.png",
+     "spec/public/images/css_sprite/logos_hover/gmail_logo.png",
      "spec/public/images/css_sprite/not_image.txt",
      "spec/spec.opts",
      "spec/spec_helper.rb",
