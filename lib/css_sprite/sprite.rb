@@ -16,16 +16,19 @@ class Sprite
     end
   end
   
+  # execute the css sprite operation
   def build
     directories = css_sprite_directories
     directories.each { |directory| execute(directory) }
   end
   
+  # execute the css sprite operation if stylesheet is expired
   def check
     directories = css_sprite_directories
     directories.each { |directory| execute(directory) if expire?(directory) }
   end
   
+  # output the css sprite image and stylesheet
   def execute(directory)
     results = output_image(directory)
     unless results.empty?
@@ -34,6 +37,7 @@ class Sprite
     end
   end
   
+  # detect if the stylesheet is expired or not?
   def expire?(directory)
     if sass?
       stylesheet_path = dest_sass_path(directory)
@@ -43,12 +47,12 @@ class Sprite
     return true unless File.exist?(stylesheet_path)
     stylesheet_mtime = File.new(stylesheet_path).mtime
     Dir["**/*"].each do |path|
-      # it is a directory
       return true if path !~ /.*\..*/ and File.new(path).mtime > stylesheet_mtime
     end
     return false
   end
   
+  # output stylesheet, sass or css
   def output_stylesheet(directory, results)
     if sass?
       output_sass(directory, results)
@@ -57,16 +61,19 @@ class Sprite
     end
   end
   
+  # use sass or css?
   def sass?
     @config['engine'] == 'sass'
   end
   
+  # detect all the css sprite directories. e.g. public/images/css_sprite, public/images/widget_css_sprite
   def css_sprite_directories
     Dir.entries(@image_path).collect do |d|
       File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite$/
     end.compact
   end
   
+  # output the css sprite image and return all the images properies.
   def output_image(directory)
     results = []
     sources = all_images(directory)
@@ -89,6 +96,7 @@ class Sprite
     results
   end
   
+  # opitmize the css sprite image
   def optimize_image(directory)
     unless @config['disable_optimization']
       dest_image_path = dest_image_path(directory)
@@ -98,6 +106,7 @@ class Sprite
     end
   end
 
+  # output the css sprite css
   def output_css(directory, results)
     unless results.empty?
       dest_image_name = dest_image_name(directory)
@@ -130,6 +139,7 @@ class Sprite
     end
   end
   
+  # output the css sprite sass file
   def output_sass(directory, results)
     unless results.empty?
       dest_image_name = dest_image_name(directory)
@@ -161,6 +171,7 @@ class Sprite
     end
   end
   
+  # get all the class names within the same css sprite image
   def class_names(results, options={})
     options = {:count_per_line => 5}.merge(options)
     class_names = []
@@ -171,10 +182,12 @@ class Sprite
     class_names
   end
   
+  # get the css class name from image name
   def class_name(name)
-    ".#{name.gsub('/', ' .').sub(/[_-]hover\b/, ':hover')}"
+    ".#{name.gsub('/', ' .').gsub(/[_-]hover\b/, ':hover')}"
   end
   
+  # read all images under the css sprite directory
   def all_images(directory)
     images = []
     Find.find(directory) do |path|
@@ -185,22 +198,27 @@ class Sprite
     images
   end
   
+  # destination css sprite image path
   def dest_image_path(directory)
     directory + ".png"
   end
   
+  # destination css sprite image name
   def dest_image_name(directory)
     File.basename(directory) + ".png"
   end
   
+  # destination css file path
   def dest_css_path(directory)
     File.join(@stylesheet_path, File.basename(directory) + '.css')
   end
 
+  # destination sass file path
   def dest_sass_path(directory)
     File.join(@stylesheet_path, 'sass', File.basename(directory) + '.sass')
   end
   
+  # append src_image to the dest_image with position (x, y)
   def composite_images(dest_image, src_image, x, y)
     width = [src_image.columns + x, dest_image.columns].max
     height = [src_image.rows + y, dest_image.rows].max
@@ -210,25 +228,39 @@ class Sprite
     image
   end
   
+  # get the Magick::Image
   def get_image(image_filename)
     Magick::Image::read(image_filename).first
   end
   
+  # get image properties, including name, width and height
   def image_properties(image, directory)
-    directory_length = directory.length + 1
-    extname_length = File.extname(image.filename).length
-    name = image.filename.slice(directory_length...-extname_length)
-    without = false
-    if hover?(name)
+    name = get_image_name(image, directory)
+    need_wh?(image, directory) ? {:name => name, :width => image.columns, :height => image.rows} : {:name => name}
+  end
+  
+  # check if the hover class needs width and height
+  # if the hover class has the same width and height property with not hover class, 
+  # then the hover class does not need width and height
+  def need_wh?(image, directory)
+    if hover? get_image_name(image, directory)
       not_hover_file = image.filename.sub(/[_-]hover\./, '.').sub(/[_-]hover\//, '/')
       if File.exist?(not_hover_file)
         not_hover_image = get_image(not_hover_file)
-        without = true if image.columns == not_hover_image.columns and image.rows == not_hover_image.rows
+        return false if image.columns == not_hover_image.columns and image.rows == not_hover_image.rows
       end
     end
-    without ? {:name => name} : {:name => name, :width => image.columns, :height => image.rows}
+    return true
+  end
+  
+  # get the image name substracting base directory and extname
+  def get_image_name(image, directory)
+    directory_length = directory.length + 1
+    extname_length = File.extname(image.filename).length
+    image.filename.slice(directory_length...-extname_length)
   end
 
+  # test if the filename contains a hover. e.g. icons/twitter_hover, icons_hover/twitter
   def hover?(name)
     name =~ /[_-]hover$|[_-]hover\//
   end
