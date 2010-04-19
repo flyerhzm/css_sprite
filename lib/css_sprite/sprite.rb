@@ -184,7 +184,7 @@ class Sprite
   
   # get the css class name from image name
   def class_name(name)
-    ".#{name.gsub('/', ' .').gsub(/[_-]hover\b/, ':hover')}"
+    ".#{name.gsub('/', ' .').gsub(/[_-]hover\b/, ':hover').gsub(/[_-]active\b/, '.active')}"
   end
   
   # read all images under the css sprite directory
@@ -243,11 +243,12 @@ class Sprite
   # if the hover class has the same width and height property with not hover class, 
   # then the hover class does not need width and height
   def need_wh?(image, directory)
-    if hover? get_image_name(image, directory)
-      not_hover_file = image.filename.sub(/[_-]hover\./, '.').sub(/[_-]hover\//, '/')
-      if File.exist?(not_hover_file)
-        not_hover_image = get_image(not_hover_file)
-        return false if image.columns == not_hover_image.columns and image.rows == not_hover_image.rows
+    name = get_image_name(image, directory)
+    if hover?(name) or active?(name)
+      not_file = image.filename.sub(/[_-](hover|active)\./, '.').sub(/[_-](hover|active)\//, '/')
+      if File.exist?(not_file)
+        not_image = get_image(not_file)
+        return false if image.columns == not_image.columns and image.rows == not_image.rows
       end
     end
     return true
@@ -259,10 +260,16 @@ class Sprite
     extname_length = File.extname(image.filename).length
     image.filename.slice(directory_length...-extname_length)
   end
-
-  # test if the filename contains a hover. e.g. icons/twitter_hover, icons_hover/twitter
-  def hover?(name)
-    name =~ /[_-]hover$|[_-]hover\//
+  
+  # test if the filename contains a hover or active. 
+  # e.g. icons/twitter_hover, icons_hover/twitter 
+  # e.g. icons/twitter_active, icons_active/twitter
+  [:active, :hover].each do |method|
+    class_eval <<-EOF
+      def #{method}?(name)
+        name =~ /[_-]#{method}$|[_-]#{method}\\//
+      end
+    EOF
   end
     
 end
