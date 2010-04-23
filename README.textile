@@ -10,6 +10,9 @@ I have written posts "css sprite best practices" to introduce the idea that the 
 "english version":http://www.huangzhimin.com/entries/190-css-sprite-best-practices
 "chinese version":http://www.huangzhimin.com/entries/189-css-sprite-best-practices
 
+otaviofcs wrote a brazilian version to introduce the css_sprite gem, check it here: "http://blog.riopro.com.br/2010/04/22/acabaram-as-desculpas-para-nao-usar-css-sprite-na-sua-aplicacao/":http://blog.riopro.com.br/2010/04/22/acabaram-as-desculpas-para-nao-usar-css-sprite-na-sua-aplicacao/
+and he also build a demo, "http://github.com/riopro/css_sprite_demo":http://github.com/riopro/css_sprite_demo
+
 **************************************************************************
 
 h2. What css_sprite does?
