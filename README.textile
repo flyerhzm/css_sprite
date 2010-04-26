@@ -148,6 +148,18 @@ suffix:
 The customization above means if your image filename is button suffixed (e.g. post_button.png), the corresponding class .post_button has the additional style with (outline: 0; border: 0; and so on),
 if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondiing class .twitter_icon has the additional style with (text-indent: -9999px; cursor: pointer)
 
+h3. Customization directories
+
+css_sprite follows the conventions that images are under <code>public/images</code> directory and css files are under <code>public/stylesheets</code>, but you can change them.
+
+<pre><code>
+image_path: app/images
+stylesheet_path: app/stylesheets
+</code></pre>
+
+By default, image_path is public/images and stylesheet_path is public/stylesheets.
+
+
 **************************************************************************
 
 Copyright (c) 2009 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license

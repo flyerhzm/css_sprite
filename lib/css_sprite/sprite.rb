@@ -6,14 +6,14 @@ require 'enumerator'
 class Sprite
   
   def initialize(options={})
-    @image_path = File.expand_path(File.join(Rails.root, 'public/images'))
-    @stylesheet_path = File.expand_path(File.join(Rails.root, 'public/stylesheets'))
-    
     if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
       @config = YAML::load_file(File.join(Rails.root, 'config/css_sprite.yml'))
     else
       @config = options
     end
+    
+    @image_path = File.expand_path(File.join(Rails.root, @config['image_path'] || 'public/images'))
+    @stylesheet_path = File.expand_path(File.join(Rails.root, @config['stylesheet_path'] || 'public/stylesheets'))
   end
   
   # execute the css sprite operation
