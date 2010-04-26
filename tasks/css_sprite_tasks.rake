@@ -19,7 +19,7 @@ namespace :css_sprite do
     else
       file_path = "#{Rails.root}/tmp/pids/css_sprite.pid"
       if File.exists?(file_path)
-        puts "css_sprite server is started. I haven't done anything."
+        puts "css_sprite server is started. I haven't done anything. Please use rake css_sprite:restart instead."
       else
         pid = fork do
           exec "ruby #{automatic_script}"
@@ -42,8 +42,11 @@ namespace :css_sprite do
       if File.exists?(file_path)
         fork do
           File.open(file_path, "r") do |f|
-           pid = f.readline
-           Process.kill('TERM', pid.to_i)
+            pid = f.readline
+            begin
+              Process.kill('TERM', pid.to_i)
+            rescue Errno::ESRCH
+            end
           end
         end
 
