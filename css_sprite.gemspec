@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{css_sprite}
-  s.version = "1.4.6"
+  s.version = "1.4.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Richard Huang"]
-  s.date = %q{2010-04-19}
+  s.date = %q{2010-04-27}
   s.description = %q{css_sprite is a rails plugin/gem to generate css sprite image automatically.}
   s.email = %q{flyerhzm@gmail.com}
   s.extra_rdoc_files = [
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "lib/automatic.rb",
      "lib/css_sprite.rb",
      "lib/css_sprite/sprite.rb",
+     "spec/app/stylesheets/css_sprite.css",
      "spec/css_sprite/sprite_spec.rb",
      "spec/public/images/another_css_sprite/no_image",
      "spec/public/images/css_sprite/gmail_logo.png",
@@ -44,7 +45,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/flyerhzm/css_sprite}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{css_sprite is a rails plugin/gem to generate css sprite image automatically.}
   s.test_files = [
     "spec/css_sprite/sprite_spec.rb",
