@@ -35,6 +35,11 @@ describe Sprite do
       Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('stylesheet_path' => 'app/stylesheets').build
     end
+    
+    it "should build css_sprite image and scss" do
+      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
+      Sprite.new('engine' => 'scss', 'stylesheet_path' => 'app/stylesheets').build
+    end
   end
   
   describe "css_sprite_directories" do

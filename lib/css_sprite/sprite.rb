@@ -41,6 +41,8 @@ class Sprite
   def expire?(directory)
     if sass?
       stylesheet_path = dest_sass_path(directory)
+    elsif scss?
+      stylesheet_path = dest_scss_path(directory)
     else
       stylesheet_path = dest_css_path(directory)
     end
@@ -52,18 +54,25 @@ class Sprite
     return false
   end
   
-  # output stylesheet, sass or css
+  # output stylesheet, sass, scss or css
   def output_stylesheet(directory, results)
     if sass?
       output_sass(directory, results)
+    elsif scss?
+      output_scss(directory, results)
     else
       output_css(directory, results)
     end
   end
   
-  # use sass or css?
+  # use sass
   def sass?
     @config['engine'] == 'sass'
+  end
+
+  # use scss
+  def scss?
+    @config['engine'] == 'scss'
   end
   
   # detect all the css sprite directories. e.g. public/images/css_sprite, public/images/widget_css_sprite
@@ -171,6 +180,38 @@ class Sprite
     end
   end
   
+  # output the css sprite scss file
+  def output_scss(directory, results)
+    unless results.empty?
+      dest_image_name = dest_image_name(directory)
+      dest_scss_path = dest_scss_path(directory)
+      dest_image_time = File.new(dest_image_path(directory)).mtime
+      File.open(dest_scss_path, 'w') do |f|
+        if @config['suffix']
+          @config['suffix'].each do |key, value|
+            cns = class_names(results, :suffix => key)
+            unless cns.empty?
+              f.print cns.join(",\n")
+              f.print "\n"
+              f.print value.split("\n").collect { |text| "  " + text }.join("\n")
+              f.print "\n"
+            end
+          end
+        end
+        
+        f.print class_names(results).join(",\n")
+        f.print " \n  background: url('/images/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
+      
+        results.each do |result|
+          f.print "#{class_name(result[:name])}\n"
+          f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
+          f.print "  width: #{result[:width]}px\n" if result[:width]
+          f.print "  height: #{result[:height]}px\n" if result[:height]
+        end
+      end
+    end
+  end
+  
   # get all the class names within the same css sprite image
   def class_names(results, options={})
     options = {:count_per_line => 5}.merge(options)
@@ -216,6 +257,11 @@ class Sprite
   # destination sass file path
   def dest_sass_path(directory)
     File.join(@stylesheet_path, 'sass', File.basename(directory) + '.sass')
+  end
+
+  # destination scss file path
+  def dest_scss_path(directory)
+    File.join(@stylesheet_path, 'scss', File.basename(directory) + '.scss')
   end
   
   # append src_image to the dest_image with position (x, y)
