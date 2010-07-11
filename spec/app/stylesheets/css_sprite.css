@@ -1,6 +1,6 @@
 .logos:hover .gmail_logo, .gmail_logo, .hotmail_logo, .icons .twitter_icon:hover, .icons .facebook_icon:hover,
 .icons .twitter_icon, .icons .facebook_icon, .gmail_logo.active, .logos .gmail_logo, .logos .gmail_logo.active {
-  background: url('/images/css_sprite.png?1273417463') no-repeat;
+  background: url('/images/css_sprite.png?1278833054') no-repeat;
 }
 .logos:hover .gmail_logo { background-position: 0px 0px; }
 .gmail_logo { background-position: 0px -41px; width: 103px; height: 36px; }
