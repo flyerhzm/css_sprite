@@ -61,6 +61,7 @@ h2. Usage
 2. if you install the css_sprite as a gem, you should add css_sprite task in Rakefile
 <pre><code>require 'css_sprite'</code></pre>
 If you install it as a plugin, you can skip this step
+If you use rails3, you can skip this step too
 
 2. define <code>config/css_sprite.yml</code>, it is not necessary by default.
 

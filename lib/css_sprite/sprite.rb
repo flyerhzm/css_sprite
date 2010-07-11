@@ -262,7 +262,7 @@ class Sprite
 
   # destination scss file path
   def dest_scss_path(directory)
-    File.join(@stylesheet_path, 'scss', File.basename(directory) + '.scss')
+    File.join(@stylesheet_path, File.basename(directory) + '.scss')
   end
   
   # append src_image to the dest_image with position (x, y)
