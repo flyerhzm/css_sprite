@@ -14,6 +14,8 @@ class Sprite
     
     @image_path = File.expand_path(File.join(Rails.root, @config['image_path'] || 'public/images'))
     @stylesheet_path = File.expand_path(File.join(Rails.root, @config['stylesheet_path'] || 'public/stylesheets'))
+
+    @format = @config['format'] ? @config['format'].downcase() : "png"
   end
   
   # execute the css sprite operation
@@ -100,6 +102,7 @@ class Sprite
         dest_image = composite_images(dest_image, source_image, x, y)
       end
       dest_image.image_type = @config['image_type'] ? Magick.const_get(@config['image_type']) : Magick::PaletteMatteType
+      dest_image.format = @config['format'] || "PNG"
       dest_image.write(dest_image_path)
     end
     results
@@ -242,12 +245,12 @@ class Sprite
   
   # destination css sprite image path
   def dest_image_path(directory)
-    directory + ".png"
+    directory + "." + @format
   end
   
   # destination css sprite image name
   def dest_image_name(directory)
-    File.basename(directory) + ".png"
+    File.basename(directory) + "." + @format
   end
   
   # destination css file path
