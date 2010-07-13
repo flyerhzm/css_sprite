@@ -93,6 +93,15 @@ css_sprite uses RMagick to compose the images by default. It uses PaletteMatteTy
 
 Check the detailed information of image_type here: http://www.imagemagick.org/RMagick/doc/constants.html#ImageType
 
+h3. Destination Image Format
+
+css_sprite saves the css sprite image as a png file by default. You can change it to gif or any other format like
+
+<pre><code>
+image_type: TrueColorMatteType
+format: GIF
+</code></pre>
+
 h3. Sass
 
 css_sprite generates css file by default. If you like sass, you can just add following line in the configuration file.
