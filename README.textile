@@ -169,6 +169,15 @@ stylesheet_path: app/stylesheets
 
 By default, image_path is public/images and stylesheet_path is public/stylesheets.
 
+h3. Compass support (SCSS)
+
+You can use the following configuration to support compass.
+
+<pre><code>
+engine: scss
+stylesheet_path: app/stylesheets
+</code></pre>
+
 
 **************************************************************************
 
