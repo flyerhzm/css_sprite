@@ -262,12 +262,19 @@ class Sprite
   def dest_sass_path(directory)
     File.join(@stylesheet_path, 'sass', File.basename(directory) + '.sass')
   end
+ 
+  def partial?
+    (@config['partial'] == true) || (@stylesheet_path.end_with? 'partials')
+  end
 
   # destination scss file path
   def dest_scss_path(directory)
-    File.join(@stylesheet_path, File.basename(directory) + '.scss')
+    f = ''
+    f << '_' if partial?
+    f << File.basename(directory) + '.scss'
+    File.join(@stylesheet_path, f)
   end
-  
+ 
   # append src_image to the dest_image with position (x, y)
   def composite_images(dest_image, src_image, x, y)
     width = [src_image.columns + x, dest_image.columns].max
