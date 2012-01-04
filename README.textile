@@ -85,6 +85,16 @@ h2. Configuration
 
 There is no need to create any configuration by default. If you want some customizations as follows, you need to define <code>config/css_sprite.yml</code> file.
 
+h3. Example for rails 3.1
+
+<pre><code>
+engine: css.scss
+image_path: app/assets/images
+stylesheet_path: app/assets/stylesheets
+css_images_path: assets
+disable_optimization: true
+</code></pre>
+
 h3. ImageType
 
 css_sprite uses RMagick to compose the images by default. It uses PaletteMatteType as default image_type, you can change it to any image_type which RMagick supports.
@@ -154,7 +164,7 @@ suffix:
 </code></pre>
 
 <code>engine</code> defines css (default) or sass file to generate.
-<code>suffix</code> defines the customization styles for specified images. 
+<code>suffix</code> defines the customization styles for specified images.
 The customization above means if your image filename is button suffixed (e.g. post_button.png), the corresponding class .post_button has the additional style with (outline: 0; border: 0; and so on),
 if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondiing class .twitter_icon has the additional style with (text-indent: -9999px; cursor: pointer)
 
@@ -181,4 +191,4 @@ stylesheet_path: app/stylesheets
 
 **************************************************************************
 
-Copyright (c) 2009 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
+Copyright (c) 2009 - 2012 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
