@@ -1,6 +1,6 @@
 require 'rbconfig'
 
-namespace :css_sprite do  
+namespace :css_sprite do
   desc "build css sprite image once"
   task :build do
     require File.join(File.dirname(__FILE__), '../lib/css_sprite/sprite.rb')
@@ -9,7 +9,7 @@ namespace :css_sprite do
 
   desc "restart css sprite server"
   task :restart => [:stop, :start]
-  
+
   desc "start css sprite server"
   task :start do
     automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
@@ -24,14 +24,14 @@ namespace :css_sprite do
         pid = fork do
           exec "ruby #{automatic_script}"
         end
-      
+
         sleep(1)
         File.open("#{Rails.root}/tmp/pids/css_sprite.pid", "w") { |f| f << pid }
         puts "css_sprite server started sucessfully."
       end
     end
   end
-  
+
   desc "stop css sprite server"
   task :stop do
     if Config::CONFIG['host_os'] =~ /mswin|mingw/
@@ -58,5 +58,5 @@ namespace :css_sprite do
       end
     end
   end
-  
+
 end
