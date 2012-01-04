@@ -131,15 +131,21 @@ describe Sprite do
     end
   end
 
-  describe "dest_css_path" do
+  describe "dest_stylesheet_path for css" do
     it "should get css_sprite css path for a directory" do
-      @sprite.dest_css_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.css')
+      Sprite.new("engine" => "css").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.css')
     end
   end
 
-  describe "dest_sass_path" do
+  describe "dest_stylesheet_path for sass" do
     it "should get sass_sprite css path for a directory" do
-      @sprite.dest_sass_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'sass', 'css_sprite.sass')
+      Sprite.new("engine" => "sass").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.sass')
+    end
+  end
+
+  describe "dest_stylesheet_path for scss" do
+    it "should get sass_sprite css path for a directory" do
+      Sprite.new("engine" => "scss").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.scss')
     end
   end
 
