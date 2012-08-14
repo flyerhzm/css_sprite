@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = CssSprite::VERSION
 
-  gem.add_dependency("rmagick")
+  gem.add_dependency("mini_magick")
   gem.add_runtime_dependency("rspec")
   gem.add_runtime_dependency("mocha")
 end
