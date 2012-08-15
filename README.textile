@@ -8,7 +8,7 @@ h2. Best Practices
 
 I have written posts "css sprite best practices" to introduce the idea that the css_sprite gem follows.
 "english version":http://huangzhimin.com/2010/04/03/css-sprite-best-practices-english-version
-"chinese version":http://www.huangzhimin.com/entries/189-css-sprite-best-practices
+"chinese version":http://huangzhimin.com/2010/04/02/css-sprite-best-practices-chinese-version
 
 otaviofcs wrote a brazilian version to introduce the css_sprite gem, check it here: "http://blog.riopro.com.br/2010/04/22/acabaram-as-desculpas-para-nao-usar-css-sprite-na-sua-aplicacao/":http://blog.riopro.com.br/2010/04/22/acabaram-as-desculpas-para-nao-usar-css-sprite-na-sua-aplicacao/
 and he also build a demo, "http://github.com/riopro/css_sprite_demo":http://github.com/riopro/css_sprite_demo
