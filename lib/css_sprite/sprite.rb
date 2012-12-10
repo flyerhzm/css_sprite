@@ -168,7 +168,7 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['use_asset_url']
-          f.print " \n  background: asset-url('#{dest_image_name}') no-repeat\n"
+          f.print " \n  background: asset-url('#{dest_image_name}', image) no-repeat\n"
         else
           f.print " \n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
         end
@@ -204,7 +204,7 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['use_asset_url']
-          f.print " \{\n  background: asset-url('#{dest_image_name}') no-repeat;\n\}\n"
+          f.print " \{\n  background: asset-url('#{dest_image_name}', image) no-repeat;\n\}\n"
         else
           f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
         end
