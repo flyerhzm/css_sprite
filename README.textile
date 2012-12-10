@@ -93,6 +93,7 @@ image_path: app/assets/images
 stylesheet_path: app/assets/stylesheets
 css_images_path: assets
 disable_optimization: true
+use_asset_url: true
 </code></pre>
 
 h3. ImageType
