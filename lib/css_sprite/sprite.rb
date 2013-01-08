@@ -1,5 +1,5 @@
 require 'find'
-require 'RMagick'
+require 'mini_magick'
 require 'yaml'
 require 'enumerator'
 
@@ -86,21 +86,29 @@ class Sprite
     sources = all_images(directory)
     dest_image_path = dest_image_path(directory)
     span = 5
-    unless sources.empty?
-      dest_image = get_image(sources.shift)
-      results << image_properties(dest_image, directory).merge(:x => 0, :y => 0)
-      sources.each do |source|
-        source_image = get_image(source)
-        gravity = Magick::SouthGravity
-        x = 0
-        y = dest_image.rows + span
-        results << image_properties(source_image, directory).merge(:x => x, :y => y)
-        dest_image = composite_images(dest_image, source_image, x, y)
-      end
-      dest_image.image_type = @config['image_type'] ? Magick.const_get(@config['image_type']) : Magick::PaletteMatteType
-      dest_image.format = @config['format'] || "PNG"
-      dest_image.write(dest_image_path)
+    return results if sources.empty?
+    last_y = -span
+    sources.each do |source|
+      source_image = get_image(source)
+      property =
+      x = 0
+      y = last_y + span
+      results << image_properties(source, directory).merge(:x => x, :y => y)
+      last_y = y + source_image[:height]
     end
+
+    command = MiniMagick::CommandBuilder.new('montage')
+    sources.each do |source|
+      command.push source
+    end
+    command.push('-tile 1x')
+    command.push("-geometry +0+#{span}")
+    command.push('-background None')
+    command.push('-format')
+    format = @config['format'] || "PNG"
+    command.push(format)
+    command.push(dest_image_path)
+    MiniMagick::Image.new(nil).run(command)
     results
   end
 
@@ -262,47 +270,38 @@ class Sprite
     File.join(@stylesheet_path, File.basename(directory) + "." + @engine)
   end
 
-  # append src_image to the dest_image with position (x, y)
-  def composite_images(dest_image, src_image, x, y)
-    width = [src_image.columns + x, dest_image.columns].max
-    height = [src_image.rows + y, dest_image.rows].max
-    image = Magick::Image.new(width, height) {self.background_color = 'none'}
-    image.composite!(dest_image, 0, 0, Magick::CopyCompositeOp)
-    image.composite!(src_image, x, y, Magick::CopyCompositeOp)
-    image
-  end
-
   # get the Magick::Image
   def get_image(image_filename)
-    Magick::Image::read(image_filename).first
+    MiniMagick::Image.open(image_filename)
   end
 
   # get image properties, including name, width and height
-  def image_properties(image, directory)
-    name = get_image_name(image, directory)
-    need_wh?(image, directory) ? {:name => name, :width => image.columns, :height => image.rows} : {:name => name}
+  def image_properties(image_path, directory)
+    name = get_image_name(image_path, directory)
+    image = get_image(image_path)
+    need_wh?(image_path, directory) ? {:name => name, :width => image[:width], :height => image[:height]} : {:name => name}
   end
 
   # check if the hover class needs width and height
   # if the hover class has the same width and height property with not hover class,
   # then the hover class does not need width and height
-  def need_wh?(image, directory)
-    name = get_image_name(image, directory)
+  def need_wh?(image_path, directory)
+    name = get_image_name(image_path, directory)
     if hover?(name) or active?(name)
-      not_file = image.filename.sub(/[_-](hover|active)\./, '.').sub(/[_-](hover|active)\//, '/')
+      not_file = image_path.sub(/[_-](hover|active)\./, '.').sub(/[_-](hover|active)\//, '/')
       if File.exist?(not_file)
+        image = get_image(image_path)
         not_image = get_image(not_file)
-        return false if image.columns == not_image.columns and image.rows == not_image.rows
+        return false if image[:width] == not_image[:width] and image[:height] == not_image[:height]
       end
     end
     return true
   end
 
   # get the image name substracting base directory and extname
-  def get_image_name(image, directory)
-    directory_length = directory.length + 1
-    extname_length = File.extname(image.filename).length
-    image.filename.slice(directory_length...-extname_length)
+  def get_image_name(image_path, directory)
+    extname_length = File.extname(image_path).length
+    image_path.slice(directory.length+1...-extname_length)
   end
 
   # test if the filename contains a hover or active.

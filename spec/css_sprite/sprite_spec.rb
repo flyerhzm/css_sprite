@@ -151,35 +151,19 @@ describe Sprite do
 
   describe "get_image" do
     it "should get a image" do
-      @sprite.get_image(File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')).class.should == Magick::Image
+      @sprite.get_image(File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')).class.should == MiniMagick::Image
     end
   end
 
   describe "image_properties" do
     it "should get image properties" do
-      image = @sprite.get_image(File.join(@directory_path, 'gmail_logo.png'))
-      @sprite.image_properties(image, @directory_path).should == {:name => 'gmail_logo', :width => 103, :height => 36}
+      image_path = File.join(@directory_path, 'gmail_logo.png')
+      @sprite.image_properties(image_path, @directory_path).should == {:name => 'gmail_logo', :width => 103, :height => 36}
     end
 
     it "should get a image with parent" do
-      image = @sprite.get_image(File.join(@directory_path, 'icons/twitter_icon.png'))
-      @sprite.image_properties(image, @directory_path).should == {:name => 'icons/twitter_icon', :width => 14, :height => 14}
-    end
-  end
-
-  describe "composite_images" do
-    it "should composite two images into one horizontally" do
-      image1 = @sprite.get_image(File.join(@directory_path, 'gmail_logo.png'))
-      image2 = @sprite.get_image(File.join(@directory_path, 'hotmail_logo.png'))
-      image = @sprite.composite_images(image1, image2, image1.columns, 0)
-      @sprite.image_properties(image, @directory_path).should == {:name => nil, :width => 206, :height => 36}
-    end
-
-    it "should composite two images into one verically" do
-      image1 = @sprite.get_image(File.join(@directory_path, 'gmail_logo.png'))
-      image2 = @sprite.get_image(File.join(@directory_path, 'hotmail_logo.png'))
-      image = @sprite.composite_images(image1, image2, 0, image1.rows)
-      @sprite.image_properties(image, @directory_path).should == {:name => nil, :width => 103, :height => 72}
+      image_path = File.join(@directory_path, 'icons/twitter_icon.png')
+      @sprite.image_properties(image_path, @directory_path).should == {:name => 'icons/twitter_icon', :width => 14, :height => 14}
     end
   end
 end
