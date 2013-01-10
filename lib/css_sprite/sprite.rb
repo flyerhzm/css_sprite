@@ -104,6 +104,7 @@ class Sprite
     command.push('-tile 1x')
     command.push("-geometry +0+#{span}")
     command.push('-background None')
+    command.push('-gravity West')
     command.push('-format')
     format = @config['format'] || "PNG"
     command.push(command.escape_string(format))
