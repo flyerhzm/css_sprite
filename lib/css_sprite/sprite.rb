@@ -85,16 +85,15 @@ class Sprite
     results = []
     sources = all_images(directory)
     dest_image_path = dest_image_path(directory)
-    span = 2
     return results if sources.empty?
     last_y = 0
     sources.each do |source|
       source_image = get_image(source)
       property =
       x = 0
-      y = last_y + span
+      y = last_y
       results << image_properties(source, directory).merge(:x => x, :y => y)
-      last_y = y + source_image[:height] + span
+      last_y = y + source_image[:height]
     end
 
     command = MiniMagick::CommandBuilder.new('montage')
@@ -102,7 +101,7 @@ class Sprite
       command.push command.escape_string source
     end
     command.push('-tile 1x')
-    command.push("-geometry +0+#{span}")
+    command.push("-geometry +0+0")
     command.push('-background None')
     command.push('-gravity West')
     command.push('-format')
