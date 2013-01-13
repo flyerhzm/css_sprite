@@ -18,7 +18,7 @@ class Sprite
 
     @css_images_path = @config['css_images_path'] ||= "images"
     @format = @config['format'] ? @config['format'].downcase : "png"
-    @engine = @config['engine'] || "css"
+    @engine = @config['engine'] || "css.scss"
   end
 
   # execute the css sprite operation
