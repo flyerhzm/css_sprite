@@ -173,7 +173,21 @@ image_path: public/images
 stylesheet_path: public/stylesheets
 </code></pre>
 
-By default, image_path is public/images and stylesheet_path is public/stylesheets.
+By default, image_path is app/assets/images and stylesheet_path is app/assets/stylesheets.
+
+h2. Example
+
+I built an example
+
+images are under <code>app/assets/images/css_sprite/</code>
+generated css sprite image is at <code>app/assets/images/css_sprite.png</code>
+genereated css file is at <code>app/assets/stylesheets/css_sprite.css</code>
+
+<pre><code>
+$ cd example
+$ rake css_sprite:build
+$ open index.html
+</code></pre>
 
 
 **************************************************************************

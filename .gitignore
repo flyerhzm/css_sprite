@@ -23,3 +23,5 @@ spec/app/assets/stylesheets/*.scss
 spec/public/stylesheets/*.css
 spec/public/stylesheets/*.sass
 spec/public/stylesheets/*.scss
+example/app/assets/images/css_sprite.png
+example/app/assets/stylesheets/css_sprite.css
