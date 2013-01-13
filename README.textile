@@ -98,6 +98,14 @@ css_sprite saves the css sprite image as a png file by default. You can change i
 format: GIF
 </code></pre>
 
+h3. Use asset-url
+
+css_sprite generate <code>background: url('css_sprite.png') no-repeat</code> by default, if you prefer <code>background: asset-url('css_sprite.png') no-repeat</code>, you can change it as follows
+
+<pre><code>
+use_asset_url: true
+</code></pre>
+
 h3. Sass
 
 css_sprite generates css.scss file by default. You can change it to pure css or sass as you like.
