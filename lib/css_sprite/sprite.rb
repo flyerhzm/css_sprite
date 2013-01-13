@@ -16,7 +16,7 @@ class Sprite
     @image_path = File.expand_path(File.join(base_dir, @config['image_path'] || 'app/assets/images'))
     @stylesheet_path = File.expand_path(File.join(base_dir, @config['stylesheet_path'] || 'app/assets/stylesheets'))
 
-    @css_images_path = @config['css_images_path'] ||= "images"
+    @css_images_path = @config['css_images_path'] ||= "assets"
     @format = @config['format'] ? @config['format'].downcase : "png"
     @engine = @config['engine'] || "css.scss"
   end
