@@ -1,0 +1,3 @@
+engine: css
+css_images_path_relative: true
+css_images_path: ../images

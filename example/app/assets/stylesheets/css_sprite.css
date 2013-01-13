@@ -1,0 +1,7 @@
+.facebook_icon, .gmail_logo, .hotmail_logo, .twitter_icon {
+  background: url('../images/css_sprite.png?1358087148') no-repeat;
+}
+.facebook_icon { background-position: 0px 0px; width: 14px; height: 14px; }
+.gmail_logo { background-position: 0px -14px; width: 103px; height: 36px; }
+.hotmail_logo { background-position: 0px -50px; width: 103px; height: 36px; }
+.twitter_icon { background-position: 0px -86px; width: 14px; height: 14px; }
