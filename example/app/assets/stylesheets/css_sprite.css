@@ -1,5 +1,5 @@
 .facebook_icon, .gmail_logo, .hotmail_logo, .twitter_icon {
-  background: url('../images/css_sprite.png?1358087763') no-repeat;
+  background: url('../images/css_sprite.png?1358087793') no-repeat;
 }
 .facebook_icon { background-position: 0px 0px; width: 14px; height: 14px; }
 .gmail_logo { background-position: 0px -14px; width: 103px; height: 36px; }
