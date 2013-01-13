@@ -33,12 +33,12 @@ describe Sprite do
 
     it "should output css to customized stylesheet_path" do
       Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
-      Sprite.new('stylesheet_path' => 'app/stylesheets').build
+      Sprite.new('stylesheet_path' => 'public/stylesheets').build
     end
 
     it "should build css_sprite image and scss" do
       Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
-      Sprite.new('engine' => 'scss', 'stylesheet_path' => 'app/stylesheets').build
+      Sprite.new('engine' => 'scss', 'stylesheet_path' => 'public/stylesheets').build
     end
   end
 

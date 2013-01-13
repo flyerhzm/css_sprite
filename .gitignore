@@ -16,10 +16,10 @@ test/tmp
 test/version_tmp
 tmp
 
-spec/public/images/css_sprite.png
+spec/app/assets/images/css_sprite.png
+spec/app/assets/stylesheets/*.css
+spec/app/assets/stylesheets/*.sass
+spec/app/assets/stylesheets/*.scss
 spec/public/stylesheets/*.css
 spec/public/stylesheets/*.sass
 spec/public/stylesheets/*.scss
-spec/app/stylesheets/*.css
-spec/app/stylesheets/*.sass
-spec/app/stylesheets/*.scss

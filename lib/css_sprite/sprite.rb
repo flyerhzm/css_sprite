@@ -6,14 +6,15 @@ require 'enumerator'
 class Sprite
 
   def initialize(options={})
-    if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
-      @config = YAML::load_file(File.join(Rails.root, 'config/css_sprite.yml'))
+    base_dir = Dir.pwd
+    if File.exist?(File.join(base_dir, 'config/css_sprite.yml'))
+      @config = YAML::load_file(File.join(base_dir, 'config/css_sprite.yml'))
     else
       @config = options
     end
 
-    @image_path = File.expand_path(File.join(Rails.root, @config['image_path'] || 'public/images'))
-    @stylesheet_path = File.expand_path(File.join(Rails.root, @config['stylesheet_path'] || 'public/stylesheets'))
+    @image_path = File.expand_path(File.join(base_dir, @config['image_path'] || 'app/assets/images'))
+    @stylesheet_path = File.expand_path(File.join(base_dir, @config['stylesheet_path'] || 'app/assets/stylesheets'))
 
     @css_images_path = @config['css_images_path'] ||= "images"
     @format = @config['format'] ? @config['format'].downcase : "png"
@@ -73,7 +74,7 @@ class Sprite
     @engine =~ /scss$/
   end
 
-  # detect all the css sprite directories. e.g. public/images/css_sprite, public/images/widget_css_sprite
+  # detect all the css sprite directories. e.g. app/assets/images/css_sprite, app/assets/images/widget_css_sprite
   def css_sprite_directories
     Dir.entries(@image_path).collect do |d|
       File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite$/
