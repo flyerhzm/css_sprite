@@ -143,7 +143,11 @@ class Sprite
         end
 
         f.print class_names(results).join(",\n")
-        f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        if @config['css_images_path_relative']
+          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        else
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        end
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{"
