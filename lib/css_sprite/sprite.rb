@@ -77,7 +77,7 @@ class Sprite
   # detect all the css sprite directories. e.g. app/assets/images/css_sprite, app/assets/images/widget_css_sprite
   def css_sprite_directories
     Dir.entries(@image_path).collect do |d|
-      File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite$/
+      File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite(@2x)?$/
     end.compact
   end
 
@@ -144,16 +144,24 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['css_images_path_relative']
-          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n"
         else
-          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n"
         end
+
+        scale = 1
+        if directory.match(/@2x/)
+          f.print "  background-size: #{(get_image(dest_image_path(directory))[:width]/2).to_s + 'px'};\n"
+          scale = 2
+        end
+
+        f.print "\}\n"
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{"
-          f.print " background-position: #{-result[:x]}px #{-result[:y]}px;"
-          f.print " width: #{result[:width]}px;" if result[:width]
-          f.print " height: #{result[:height]}px;" if result[:height]
+          f.print " background-position: #{-result[:x]/scale}px #{-result[:y]/scale}px;"
+          f.print " width: #{result[:width]/scale}px;" if result[:width]
+          f.print " height: #{result[:height]/scale}px;" if result[:height]
           f.print " \}\n"
         end
       end
@@ -186,11 +194,17 @@ class Sprite
           f.print " \n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
         end
 
+        scale = 1
+        if directory.match(/@2x/)
+          f.print "  background-size: #{(get_image(dest_image_path(directory))[:width]/2).to_s + 'px'};\n"
+          scale = 2
+        end
+
         results.each do |result|
           f.print "#{class_name(result[:name])}\n"
-          f.print "  background-position: #{-result[:x]}px #{-result[:y]}px\n"
-          f.print "  width: #{result[:width]}px\n" if result[:width]
-          f.print "  height: #{result[:height]}px\n" if result[:height]
+          f.print "  background-position: #{-result[:x]/scale}px #{-result[:y]/scale}px\n"
+          f.print "  width: #{result[:width]/scale}px\n" if result[:width]
+          f.print "  height: #{result[:height]/scale}px\n" if result[:height]
         end
       end
     end
@@ -217,16 +231,24 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['use_asset_url']
-          f.print " \{\n  background: asset-url('#{dest_image_name}', image) no-repeat;\n\}\n"
+          f.print " \{\n  background: asset-url('#{dest_image_name}', image) no-repeat;\n"
         else
-          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n"
         end
+
+        scale = 1
+        if directory.match(/@2x/)
+          f.print "  background-size: #{(get_image(dest_image_path(directory))[:width]/2).to_s + 'px'};\n"
+          scale = 2
+        end
+
+        f.print "\}\n"
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{\n"
-          f.print "  background-position: #{-result[:x]}px #{-result[:y]}px;\n"
-          f.print "  width: #{result[:width]}px;\n" if result[:width]
-          f.print "  height: #{result[:height]}px;\n" if result[:height]
+          f.print "  background-position: #{-result[:x]/scale}px #{-result[:y]/scale}px;\n"
+          f.print "  width: #{result[:width]/scale}px;\n" if result[:width]
+          f.print "  height: #{result[:height]/scale}px;\n" if result[:height]
           f.print " \}\n"
         end
       end
