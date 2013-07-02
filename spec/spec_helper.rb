@@ -3,6 +3,9 @@ require 'rspec/autorun'
 require 'date'
 require 'mocha/api'
 
+require 'coveralls'
+Coveralls.wear!
+
 class Dir
   def self.pwd
     File.dirname(__FILE__)
