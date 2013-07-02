@@ -41,9 +41,9 @@ describe Sprite do
 
   describe "css_sprite_directories" do
     it "should read two direcoties" do
-      expected_directories = [File.join(IMAGE_PATH, 'another_css_sprite'),
-                                  File.join(IMAGE_PATH, 'css_sprite')]
-      @sprite.css_sprite_directories.should == expected_directories
+      @sprite.css_sprite_directories.should have(2).items
+      @sprite.css_sprite_directories.should be_include File.join(IMAGE_PATH, 'another_css_sprite')
+      @sprite.css_sprite_directories.should be_include File.join(IMAGE_PATH, 'css_sprite')
     end
   end
 
