@@ -99,7 +99,7 @@ class Sprite
 
     command = MiniMagick::CommandBuilder.new('montage')
     sources.each do |source|
-      command.push command.escape_string source
+      command.push source
     end
     command.push('-tile 1x')
     command.push("-geometry +0+0")
@@ -107,8 +107,8 @@ class Sprite
     command.push('-gravity West')
     command.push('-format')
     format = @config['format'] || "PNG"
-    command.push(command.escape_string(format))
-    command.push(command.escape_string(dest_image_path))
+    command.push(format)
+    command.push(dest_image_path)
     MiniMagick::Image.new(nil).run(command)
     results
   end
