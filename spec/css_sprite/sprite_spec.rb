@@ -8,22 +8,21 @@ describe Sprite do
 
   describe "build" do
     it "should build css_sprite image and css" do
-      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
+      Sprite.any_instance.expects(:system).with("optipng -o 1 #{IMAGE_PATH}/css_sprite.png").never
       Sprite.new.build
     end
 
     it "should build css_sprite image and sass" do
-      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('engine' => 'sass').build
     end
 
     it "should build another image_type" do
-      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
       Sprite.new('image_type' => 'PaletteType').build
     end
 
-    it "should disable image optimization" do
-      Sprite.new('disable_optimization' => true).build
+    it "should do optimization" do
+      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
+      Sprite.new('optimization' => true).build
     end
 
     it "should build another image optimization" do
@@ -32,13 +31,11 @@ describe Sprite do
     end
 
     it "should output css to customized stylesheet_path" do
-      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
-      Sprite.new('stylesheet_path' => 'app/stylesheets').build
+      Sprite.new('stylesheet_path' => 'public/stylesheets').build
     end
 
     it "should build css_sprite image and scss" do
-      Sprite.any_instance.expects(:system).with("optipng -quiet #{IMAGE_PATH}/css_sprite.png").returns(true)
-      Sprite.new('engine' => 'scss', 'stylesheet_path' => 'app/stylesheets').build
+      Sprite.new('engine' => 'scss', 'stylesheet_path' => 'public/stylesheets').build
     end
   end
 

@@ -43,24 +43,20 @@ css_sprite css is the css file automatically generated under public/stylesheets 
 
 h2. Install
 
-css_sprite depends on the <code>rmagick</code> gem, please make sure RMagick is successfully installed on your system.
+css_sprite depends on the <code>mini_magick</code> gem
 css_sprite also depends on the <code>optipng</code> tool as default image optimization, but you can use any other image optimization tool, check the Configuration section. If you use the default optipng tool, please make sure it is successfully installed on your system.
 
 install css_sprite as a gem:
-<pre><code>sudo gem install css_sprite</code></pre>
-
-or install css_sprite as a plugin:
-<pre><code>script/plugin install git://github.com/flyerhzm/css_sprite.git</code></pre>
+<pre><code>gem install css_sprite</code></pre>
 
 **************************************************************************
 
 h2. Usage
 
-1. create a directory whose name is css_sprite or ends with css_sprite (e.g. widget_css_sprite) under <code>public/images</code> directory
+1. create a directory whose name is css_sprite or ends with css_sprite (e.g. widget_css_sprite) under <code>app/assets/images</code> directory
 
-2. if you install the css_sprite as a gem, you should add css_sprite task in Rakefile
+2. if you css_sprite in rails2 projects, you should add css_sprite task in Rakefile
 <pre><code>require 'css_sprite'</code></pre>
-If you install it as a plugin, you can skip this step
 If you use rails3, you can skip this step too
 
 2. define <code>config/css_sprite.yml</code>, it is not necessary by default.
@@ -83,57 +79,54 @@ Or you can just do the css sprite manually by <code>rake css_sprite:build</code>
 
 h2. Configuration
 
-There is no need to create any configuration by default. If you want some customizations as follows, you need to define <code>config/css_sprite.yml</code> file.
+There is no need to do any configurations by default for Rails 3.1 or higher projects. If you want some customizations as follows, you need to define <code>config/css_sprite.yml</code> file.
 
-h3. Example for rails 3.1
+h3. Example for rails 2.x or 3.0
 
 <pre><code>
-engine: css.scss
-image_path: app/assets/images
-stylesheet_path: app/assets/stylesheets
-css_images_path: assets
-disable_optimization: true
-use_asset_url: true
+engine: css
+image_path: public/images
+stylesheet_path: public/stylesheets
+css_images_path: images
 </code></pre>
-
-h3. ImageType
-
-css_sprite uses RMagick to compose the images by default. It uses PaletteMatteType as default image_type, you can change it to any image_type which RMagick supports.
-
-<pre><code>image_type: PaletteType</code></pre>
-
-Check the detailed information of image_type here: http://www.imagemagick.org/RMagick/doc/constants.html#ImageType
-
-for gif transparency, you must use <code>image_type: TrueColorMatteType</code>.
 
 h3. Destination Image Format
 
 css_sprite saves the css sprite image as a png file by default. You can change it to gif or any other format like
 
 <pre><code>
-image_type: TrueColorMatteType
 format: GIF
+</code></pre>
+
+h3. Use asset-url
+
+css_sprite generate <code>background: url('css_sprite.png') no-repeat</code> by default, if you prefer <code>background: asset-url('css_sprite.png') no-repeat</code>, you can change it as follows
+
+<pre><code>
+use_asset_url: true
 </code></pre>
 
 h3. Sass
 
-css_sprite generates css file by default. If you like sass, you can just add following line in the configuration file.
+css_sprite generates css.scss file by default. You can change it to pure css or sass as you like.
 
-<pre><code>engine:sass</code></pre>
+<pre><code>engine: css</code></pre>
+
+<pre><code>engine: css.sass</code></pre>
 
 h3. Image Optimization
 
-css_sprite uses *optipng* with optimization level 2 to optimize the auto generated css_sprite image by default. You can change it to any image optimization command.
+css_sprite allows to do optimization to generated css_sprite.png, you can use default *optipng* with optimization level 2.
+
+<pre><code>optimization: true</code></pre>
+
+Or you can change it to any image optimization command.
 
 <pre><code>optimization: optipng -o 7</code></pre>
 
-You can also disable the image optimization by
-
-<pre><code>disable_optimization: true</code></pre>
-
 h3. Customization styles
 
-* For css
+* For css or scss
 <pre><code>
 suffix:
   button: |
@@ -166,32 +159,37 @@ suffix:
     cursor: pointer
 </code></pre>
 
-<code>engine</code> defines css (default) or sass file to generate.
+<code>engine</code> defines css.scss (default), pure css or sass file to generate.
 <code>suffix</code> defines the customization styles for specified images.
 The customization above means if your image filename is button suffixed (e.g. post_button.png), the corresponding class .post_button has the additional style with (outline: 0; border: 0; and so on),
 if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondiing class .twitter_icon has the additional style with (text-indent: -9999px; cursor: pointer)
 
 h3. Customization directories
 
-css_sprite follows the conventions that images are under <code>public/images</code> directory and css files are under <code>public/stylesheets</code>, but you can change them.
+css_sprite follows the conventions that images are under <code>app/assets/images</code> directory and css files are under <code>app/assets/stylesheets</code>, but you can change them.
 
 <pre><code>
-image_path: app/images
-stylesheet_path: app/stylesheets
+image_path: public/images
+stylesheet_path: public/stylesheets
 </code></pre>
 
-By default, image_path is public/images and stylesheet_path is public/stylesheets.
+By default, image_path is app/assets/images and stylesheet_path is app/assets/stylesheets.
 
-h3. Compass support (SCSS)
+h2. Example
 
-You can use the following configuration to support compass.
+I built an example
+
+images are under <code>app/assets/images/css_sprite/</code>
+generated css sprite image is at <code>app/assets/images/css_sprite.png</code>
+genereated css file is at <code>app/assets/stylesheets/css_sprite.css</code>
 
 <pre><code>
-engine: scss
-stylesheet_path: app/stylesheets
+$ cd example
+$ rake css_sprite:build
+$ open index.html
 </code></pre>
 
 
 **************************************************************************
 
-Copyright (c) 2009 - 2012 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license
+Copyright (c) 2009 - 2013 [Richard Huang (flyerhzm@gmail.com)], released under the MIT license

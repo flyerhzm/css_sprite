@@ -13,7 +13,7 @@ namespace :css_sprite do
   desc "start css sprite server"
   task :start do
     automatic_script = File.join(File.dirname(__FILE__), '..', 'lib', 'automatic.rb')
-    if Config::CONFIG['host_os'] =~ /mswin|mingw/
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
       exec "start \"css_sprite\" ruby.exe #{automatic_script}"
       puts "css_sprite server started sucessfully."
     else
@@ -34,7 +34,7 @@ namespace :css_sprite do
 
   desc "stop css sprite server"
   task :stop do
-    if Config::CONFIG['host_os'] =~ /mswin|mingw/
+    if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
       exec "taskkill /im ruby.exe /fi \"Windowtitle eq css_sprite\""
       puts "css_sprite server shutdown sucessfully."
     else

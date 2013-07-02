@@ -6,18 +6,19 @@ require 'enumerator'
 class Sprite
 
   def initialize(options={})
-    if File.exist?(File.join(Rails.root, 'config/css_sprite.yml'))
-      @config = YAML::load_file(File.join(Rails.root, 'config/css_sprite.yml'))
+    base_dir = Dir.pwd
+    if File.exist?(File.join(base_dir, 'config/css_sprite.yml'))
+      @config = YAML::load_file(File.join(base_dir, 'config/css_sprite.yml'))
     else
       @config = options
     end
 
-    @image_path = File.expand_path(File.join(Rails.root, @config['image_path'] || 'public/images'))
-    @stylesheet_path = File.expand_path(File.join(Rails.root, @config['stylesheet_path'] || 'public/stylesheets'))
+    @image_path = File.expand_path(File.join(base_dir, @config['image_path'] || 'app/assets/images'))
+    @stylesheet_path = File.expand_path(File.join(base_dir, @config['stylesheet_path'] || 'app/assets/stylesheets'))
 
-    @css_images_path = @config['css_images_path'] ||= "images"
+    @css_images_path = @config['css_images_path'] ||= "assets"
     @format = @config['format'] ? @config['format'].downcase : "png"
-    @engine = @config['engine'] || "css"
+    @engine = @config['engine'] || "css.scss"
   end
 
   # execute the css sprite operation
@@ -73,7 +74,7 @@ class Sprite
     @engine =~ /scss$/
   end
 
-  # detect all the css sprite directories. e.g. public/images/css_sprite, public/images/widget_css_sprite
+  # detect all the css sprite directories. e.g. app/assets/images/css_sprite, app/assets/images/widget_css_sprite
   def css_sprite_directories
     Dir.entries(@image_path).collect do |d|
       File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite$/
@@ -85,16 +86,15 @@ class Sprite
     results = []
     sources = all_images(directory)
     dest_image_path = dest_image_path(directory)
-    span = 2
     return results if sources.empty?
     last_y = 0
     sources.each do |source|
       source_image = get_image(source)
       property =
       x = 0
-      y = last_y + span
+      y = last_y
       results << image_properties(source, directory).merge(:x => x, :y => y)
-      last_y = y + source_image[:height] + span
+      last_y = y + source_image[:height]
     end
 
     command = MiniMagick::CommandBuilder.new('montage')
@@ -102,8 +102,9 @@ class Sprite
       command.push command.escape_string source
     end
     command.push('-tile 1x')
-    command.push("-geometry +0+#{span}")
+    command.push("-geometry +0+0")
     command.push('-background None')
+    command.push('-gravity West')
     command.push('-format')
     format = @config['format'] || "PNG"
     command.push(command.escape_string(format))
@@ -114,9 +115,9 @@ class Sprite
 
   # opitmize the css sprite image
   def optimize_image(directory)
-    unless @config['disable_optimization']
+    if @config['optimization']
       dest_image_path = dest_image_path(directory)
-      command  = @config['optimization'] ? "#{@config['optimization']} #{dest_image_path}" : "optipng -quiet #{dest_image_path}"
+      command  = @config['optimization'] === true ? "optipng -quiet #{dest_image_path}" : "#{@config['optimization']} #{dest_image_path}"
       result = system(command)
       puts %Q(Optimization command "#{command}" execute failed) unless result
     end
@@ -142,7 +143,11 @@ class Sprite
         end
 
         f.print class_names(results).join(",\n")
-        f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        if @config['css_images_path_relative']
+          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        else
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+        end
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{"
