@@ -43,8 +43,10 @@ css sprite generates css_sprite image and css files automatically for you follow
 
 css_sprite directory is the directory whose name is "css_sprite" or
 "css_sprite" suffixed under `app/assets/images` directory.
+
 css_sprite image is the image file automatically generated under
 `app/assets/images` directory.
+
 css_sprite css is the css file automatically generated under
 `app/assets/stylesheets` directory.
 
@@ -53,7 +55,9 @@ css_sprite css is the css file automatically generated under
 
 css_sprite depends on the `mini_magick` gem
 
-css_sprite also depends on the `optipng` tool as default image optimization, but you can use any other image optimization tool, check the Configuration section. If you use the default optipng tool, please make sure it is successfully installed on your system.
+css_sprite also depends on the `optipng` tool as default image optimization, but you can use any other image optimization tool, check the Configuration section.
+
+If you use the default optipng tool, please make sure it is successfully installed on your system.
 
 install css_sprite as a gem:
 
