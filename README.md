@@ -10,38 +10,43 @@ automatically css sprite.
 ## Best Practices
 
 I have written posts “css sprite best practices” to introduce the idea that the css_sprite gem follows.
+
 [english version](http://huangzhimin.com/2010/04/03/css-sprite-best-practices-english-version)
+
 [chinese version](http://huangzhimin.com/2010/04/02/css-sprite-best-practices-chinese-version)
 
 otaviofcs wrote a brazilian version to introduce the css_sprite gem,
 check it [here](http://blog.riopro.com.br/2010/04/22/acabaram-as-desculpas-para-nao-usar-css-sprite-na-sua-aplicacao/)
-and he also build a demo(http://github.com/riopro/css_sprite_demo)
+and he also build a [demo](http://github.com/riopro/css_sprite_demo)
 
 ## What css_sprite does?
 
-css sprite generates css\_sprite image and css files automatically for you follow the conventions as follows.
+css sprite generates css_sprite image and css files automatically for you follow the conventions as follows.
 
-  ------------------------------------ -------------------------------
-  images under css\_sprite directory   class name in css\_sprite css
-  twitter\_icon.png                    .twitter\_icon
-  facebook\_icon.png                   .facebook\_icon
-  hotmail-logo.png                     .hotmail-logo
-  gmail-logo.png                       .gmail-logo
-  icons/twitter\_icon.png              .icons .twitter\_icon
-  widget/icons/twitter\_icon.png       .widget .icons .twitter\_icon
-  twitter\_icon\_hover.png             .twitter\_icon:hover
-  twitter-icon-hover.png               .twitter-icon:hover
-  logos\_hover/gmail\_logo.png         .logos:hover .gmail\_logo
-  logos-hover/gmail-logo.png           .logos:hover .gmail-logo
-  gmail\_logo\_active.png              .gmail\_logo.active
-  gmail-logo-active.png                .gmail-logo.active
-  logos\_active/gmail\_logo.png        .logos.active .gmail\_logo
-  logos-active/gmail-logo.png          .logos.active .gmail-logo
-  ------------------------------------ -------------------------------
+<table>
+  <tr><th>images under css_sprite directory</th><th>class name in css_sprite css</th></tr>
+  <tr><td>twitter_icon.png</td><td>.twitter_icon</td></tr>
+  <tr><td>facebook_icon.png</td><td>.facebook_icon</td></tr>
+  <tr><td>hotmail-logo.png</td><td>.hotmail-logo</td></tr>
+  <tr><td>gmail-logo.png</td><td>.gmail-logo</td></tr>
+  <tr><td>icons/twitter_icon.png</td><td>.icons .twitter_icon</td></tr>
+  <tr><td>widget/icons/twitter_icon.png</td><td>.widget .icons .twitter_icon</td></tr>
+  <tr><td>twitter_icon_hover.png</td><td>.twitter_icon:hover</td></tr>
+  <tr><td>twitter-icon-hover.png</td><td>.twitter-icon:hover</td></tr>
+  <tr><td>logos_hover/gmail_logo.png</td><td>.logos:hover .gmail_logo</td></tr>
+  <tr><td>logos-hover/gmail-logo.png</td><td>.logos:hover .gmail-logo</td></tr>
+  <tr><td>gmail_logo_active.png</td><td>.gmail_logo.active</td></tr>
+  <tr><td>gmail-logo-active.png</td><td>.gmail-logo.active</td></tr>
+  <tr><td>logos_active/gmail_logo.png</td><td>.logos.active .gmail_logo</td></tr>
+  <tr><td>logos-active/gmail-logo.png</td><td>.logos.active .gmail-logo</td></tr>
+</table>
 
-css_sprite directory is the directory whose name is "css_sprite" or "css_sprite" suffixed under public/images directory.
-css_sprite image is the image file automatically generated under public/images directory.
-css_sprite css is the css file automatically generated under public/stylesheets directory.
+css_sprite directory is the directory whose name is "css_sprite" or
+"css_sprite" suffixed under `app/assets/images` directory.
+css_sprite image is the image file automatically generated under
+`app/assets/images` directory.
+css_sprite css is the css file automatically generated under
+`app/assets/stylesheets` directory.
 
 
 ## Install
@@ -125,7 +130,7 @@ Or you can change it to any image optimization command.
 
 ### Customization styles
 
-* For css or scss
+For css or scss
 
     suffix:
       button: |
@@ -140,7 +145,7 @@ Or you can change it to any image optimization command.
         text-indent: -9999px;
         cursor: pointer;
 
-* For sass
+For sass
 
     engine: sass
     suffix:
@@ -157,14 +162,16 @@ Or you can change it to any image optimization command.
         cursor: pointer
 
 `engine` defines css.scss (default), pure css or sass file to generate.
+
 `suffix` defines the customization styles for specified images.
+
 The customization above means if your image filename is button suffixed (e.g. post_button.png), the corresponding class .post_button has the additional style with (outline: 0; border: 0; and so on),
 if your image filename is icon suffixed (e.g. twitter_icon.png), the correspondiing class .twitter_icon has the additional style with (text-indent: -9999px; cursor: pointer)
 
 ### Customization directories
 
 css_sprite follows the conventions that images are under
-<code>app/assets/images</code> directory and css files are under
+`app/assets/images` directory and css files are under
 `app/assets/stylesheets`, but you can change them.
 
     image_path: public/images
@@ -178,7 +185,9 @@ By default, image_path is `app/assets/images` and stylesheet_path is
 I built an example
 
 images are under `app/assets/images/css_sprite/`
-generated css sprite image is at `>app/assets/images/css_sprite.png`
+
+generated css sprite image is at `app/assets/images/css_sprite.png`
+
 genereated css file is at `app/assets/stylesheets/css_sprite.css`
 
     $ cd example
@@ -186,4 +195,4 @@ genereated css file is at `app/assets/stylesheets/css_sprite.css`
     $ open index.html
 
 
-Copyright (c) 2009 - 2013 [Richard Huang] (flyerhzm@gmail.com), released under the MIT license
+Copyright (c) 2009 - 2013 [Richard Huang] flyerhzm@gmail.com, released under the MIT license
