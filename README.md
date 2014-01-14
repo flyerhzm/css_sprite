@@ -101,6 +101,7 @@ There is no need to do any configurations by default for Rails 3.1 or higher pro
     image_path: public/images
     stylesheet_path: public/stylesheets
     css_images_path: images
+    source_images_path: app/sprites
 
 ### Destination Image Format
 
@@ -180,9 +181,10 @@ css_sprite follows the conventions that images are under
 
     image_path: public/images
     stylesheet_path: public/stylesheets
+    source_images_path: app/sprites
 
-By default, image_path is `app/assets/images` and stylesheet_path is
-`app/assets/stylesheets`.
+By default, source_images_path and image_path are `app/assets/images` and
+stylesheet_path is `app/assets/stylesheets`.
 
 ## Example
 
