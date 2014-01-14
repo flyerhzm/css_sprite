@@ -14,6 +14,7 @@ class Sprite
     end
 
     @image_path = File.expand_path(File.join(base_dir, @config['image_path'] || 'app/assets/images'))
+    @source_images_path = File.expand_path(File.join(base_dir, @config['source_images_path'] || @image_path))
     @stylesheet_path = File.expand_path(File.join(base_dir, @config['stylesheet_path'] || 'app/assets/stylesheets'))
 
     @css_images_path = @config['css_images_path'] ||= "assets"
@@ -76,8 +77,8 @@ class Sprite
 
   # detect all the css sprite directories. e.g. app/assets/images/css_sprite, app/assets/images/widget_css_sprite
   def css_sprite_directories
-    Dir.entries(@image_path).collect do |d|
-      File.join(@image_path, d) if File.directory?(File.join(@image_path, d)) and d =~ /css_sprite$/
+    Dir.entries(@source_images_path).collect do |d|
+      File.join(@source_images_path, d) if File.directory?(File.join(@source_images_path, d)) and d =~ /css_sprite$/
     end.compact
   end
 
@@ -264,7 +265,7 @@ class Sprite
 
   # destination css sprite image path
   def dest_image_path(directory)
-    directory + "." + @format
+    File.join(@image_path, File.basename(directory) + "." + @format)
   end
 
   # destination css sprite image name
