@@ -13,8 +13,9 @@ class Sprite
       @config = options
     end
 
-    @image_path = File.expand_path(File.join(base_dir, @config['image_path'] || 'app/assets/images'))
-    @source_images_path = File.expand_path(File.join(base_dir, @config['source_images_path'] || @image_path))
+    image_relative_path = @config['image_path'] || 'app/assets/images'
+    @image_path = File.expand_path(File.join(base_dir, image_relative_path))
+    @source_images_path = File.expand_path(File.join(base_dir, @config['source_images_path'] || image_relative_path))
     @stylesheet_path = File.expand_path(File.join(base_dir, @config['stylesheet_path'] || 'app/assets/stylesheets'))
 
     @css_images_path = @config['css_images_path'] ||= "assets"
