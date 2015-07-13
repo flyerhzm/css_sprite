@@ -20,6 +20,7 @@ class Sprite
 
     @css_images_path = @config['css_images_path'] ||= "assets"
     @format = @config['format'] ? @config['format'].downcase : "png"
+    @retina_display = @config['retina_display'] || false
     @engine = @config['engine'] || "css.scss"
   end
 
@@ -96,8 +97,12 @@ class Sprite
       x = 0
       y = last_y
       results << image_properties(source, directory).merge(:x => x, :y => y)
-      last_y = y + source_image[:height]
+      height = @retina_display ? source_image[:height] / 2 : source_image[:height]
+      last_y = y + height
     end
+
+    @max_width = (results.max_by { |result| result[:width] })[:width]
+    @height = last_y
 
     command = MiniMagick::CommandBuilder.new('montage')
     {
@@ -148,10 +153,14 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['css_images_path_relative']
-          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;"
         else
-          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;"
         end
+        if @retina_display
+          f.print "\n  background-size: #{@max_width}px #{@height}px;"
+        end
+        f.print "\n\}\n"
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{"
@@ -185,10 +194,14 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['use_asset_url']
-          f.print " \n  background: asset-url('#{dest_image_name}') no-repeat\n"
+          f.print " \n  background: asset-url('#{dest_image_name}') no-repeat"
         else
-          f.print " \n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat\n"
+          f.print " \n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat"
         end
+        if @retina_display
+          f.print "\n  background-size: #{@max_width}px #{@height}px"
+        end
+        f.print "\n"
 
         results.each do |result|
           f.print "#{class_name(result[:name])}\n"
@@ -221,10 +234,14 @@ class Sprite
 
         f.print class_names(results).join(",\n")
         if @config['use_asset_url']
-          f.print " \{\n  background: asset-url('#{dest_image_name}') no-repeat;\n\}\n"
+          f.print " \{\n  background: asset-url('#{dest_image_name}') no-repeat;"
         else
-          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;\n\}\n"
+          f.print " \{\n  background: url('/#{@css_images_path}/#{dest_image_name}?#{dest_image_time.to_i}') no-repeat;"
         end
+        if @retina_display
+          f.print "\n  background-size: #{@max_width}px #{@height}px;"
+        end
+        f.print "\n\}\n"
 
         results.each do |result|
           f.print "#{class_name(result[:name])} \{\n"
@@ -288,7 +305,14 @@ class Sprite
   def image_properties(image_path, directory)
     name = get_image_name(image_path, directory)
     image = get_image(image_path)
-    need_wh?(image_path, directory) ? {:name => name, :width => image[:width], :height => image[:height]} : {:name => name}
+    if @retina_display
+      width  = image[:width] / 2
+      height = image[:height] / 2
+    else
+      width  = image[:width]
+      height = image[:height]
+    end
+    need_wh?(image_path, directory) ? {:name => name, :width => width, :height => height} : {:name => name}
   end
 
   # check if the hover class needs width and height
