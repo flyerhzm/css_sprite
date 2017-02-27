@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Sprite do
-  before(:all) do
+RSpec.describe Sprite do
+  before(:context) do
     @sprite = Sprite.new
     @directory_path = File.join(IMAGE_PATH, 'css_sprite')
   end
@@ -41,9 +41,9 @@ describe Sprite do
 
   describe "css_sprite_directories" do
     it "should read two direcoties" do
-      @sprite.css_sprite_directories.should have(2).items
-      @sprite.css_sprite_directories.should be_include File.join(IMAGE_PATH, 'another_css_sprite')
-      @sprite.css_sprite_directories.should be_include File.join(IMAGE_PATH, 'css_sprite')
+      expect(@sprite.css_sprite_directories.size).to eq 2
+      expect(@sprite.css_sprite_directories).to be_include File.join(IMAGE_PATH, 'another_css_sprite')
+      expect(@sprite.css_sprite_directories).to be_include File.join(IMAGE_PATH, 'css_sprite')
     end
   end
 
@@ -66,101 +66,101 @@ describe Sprite do
                          File.join(IMAGE_PATH, 'css_sprite/logos/gmail_logo.png'),
                          File.join(IMAGE_PATH, 'css_sprite/logos/gmail_logo_active.png')]
       actual_images = @sprite.all_images(File.join(IMAGE_PATH, 'css_sprite'))
-      actual_images.size.should == expected_images.size
+      expect(actual_images.size).to eq expected_images.size
       expected_images.each do |expected_image|
-        actual_images.should be_include(expected_image)
+        expect(actual_images).to be_include(expected_image)
       end
     end
   end
 
   describe "class_names" do
-    before(:all) do
+    before(:context) do
       @results = [{:name => 'gmail_logo'}, {:name => 'hotmail_logo'}, {:name => 'yahoo_logo'},
                  {:name => 'gmail_button'}, {:name => 'hotmail_button'}, {:name => 'yahoo_button'}]
     end
 
     it "should get class_names with default options" do
-      @sprite.class_names(@results).should == [".gmail_logo, .hotmail_logo, .yahoo_logo, .gmail_button, .hotmail_button", ".yahoo_button"]
+      expect(@sprite.class_names(@results)).to eq [".gmail_logo, .hotmail_logo, .yahoo_logo, .gmail_button, .hotmail_button", ".yahoo_button"]
     end
 
     it "should get class_names with 3 count_per_line" do
-      @sprite.class_names(@results, :count_per_line => 3).should == [".gmail_logo, .hotmail_logo, .yahoo_logo", ".gmail_button, .hotmail_button, .yahoo_button"]
+      expect(@sprite.class_names(@results, :count_per_line => 3)).to eq [".gmail_logo, .hotmail_logo, .yahoo_logo", ".gmail_button, .hotmail_button, .yahoo_button"]
     end
 
     it "should get specified class_names with suffix" do
-      @sprite.class_names(@results, :suffix => 'logo').should == [".gmail_logo, .hotmail_logo, .yahoo_logo"]
+      expect(@sprite.class_names(@results, :suffix => 'logo')).to eq [".gmail_logo, .hotmail_logo, .yahoo_logo"]
     end
   end
 
   describe "class_name" do
     it "should get class_name with simple name" do
-      @sprite.class_name("twitter_icon").should == ".twitter_icon"
+      expect(@sprite.class_name("twitter_icon")).to eq ".twitter_icon"
     end
 
     it "should get class_name with parent class" do
-      @sprite.class_name("icons/twitter_icon").should == ".icons .twitter_icon"
+      expect(@sprite.class_name("icons/twitter_icon")).to eq ".icons .twitter_icon"
     end
 
     it "should get class_name with hover class" do
-      @sprite.class_name("icons/twitter_icon_hover").should == ".icons .twitter_icon:hover"
-      @sprite.class_name("icons/twitter-icon-hover").should == ".icons .twitter-icon:hover"
-      @sprite.class_name("twitter_hover_icon").should == ".twitter_hover_icon"
-      @sprite.class_name("twitter_hover_icon_hover").should == ".twitter_hover_icon:hover"
-      @sprite.class_name("logos_hover/gmail_logo").should == ".logos:hover .gmail_logo"
+      expect(@sprite.class_name("icons/twitter_icon_hover")).to eq ".icons .twitter_icon:hover"
+      expect(@sprite.class_name("icons/twitter-icon-hover")).to eq ".icons .twitter-icon:hover"
+      expect(@sprite.class_name("twitter_hover_icon")).to eq ".twitter_hover_icon"
+      expect(@sprite.class_name("twitter_hover_icon_hover")).to eq ".twitter_hover_icon:hover"
+      expect(@sprite.class_name("logos_hover/gmail_logo")).to eq ".logos:hover .gmail_logo"
     end
 
     it "should get class_name with active class" do
-      @sprite.class_name("gmail_logo_active").should == ".gmail_logo.active"
-      @sprite.class_name("logos_active/gmail_logo").should == ".logos.active .gmail_logo"
-      @sprite.class_name("logos/gmail_logo_active").should == ".logos .gmail_logo.active"
+      expect(@sprite.class_name("gmail_logo_active")).to eq ".gmail_logo.active"
+      expect(@sprite.class_name("logos_active/gmail_logo")).to eq ".logos.active .gmail_logo"
+      expect(@sprite.class_name("logos/gmail_logo_active")).to eq ".logos .gmail_logo.active"
     end
   end
 
   describe "dest_image_path" do
     it "should get css_sprite image path for a directory" do
-      @sprite.dest_image_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(IMAGE_PATH, 'css_sprite.png')
+      expect(@sprite.dest_image_path(File.join(IMAGE_PATH, 'css_sprite'))).to eq File.join(IMAGE_PATH, 'css_sprite.png')
     end
   end
 
   describe "dest_image_name" do
     it "should get css_sprite image name for a directory" do
-      @sprite.dest_image_name(File.join(IMAGE_PATH, 'css_sprite')).should == 'css_sprite.png'
+      expect(@sprite.dest_image_name(File.join(IMAGE_PATH, 'css_sprite'))).to eq 'css_sprite.png'
     end
   end
 
   describe "dest_stylesheet_path for css" do
     it "should get css_sprite css path for a directory" do
-      Sprite.new("engine" => "css").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.css')
+      expect(Sprite.new("engine" => "css").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite'))).to eq File.join(STYLESHEET_PATH, 'css_sprite.css')
     end
   end
 
   describe "dest_stylesheet_path for sass" do
     it "should get sass_sprite css path for a directory" do
-      Sprite.new("engine" => "sass").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.sass')
+      expect(Sprite.new("engine" => "sass").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite'))).to eq File.join(STYLESHEET_PATH, 'css_sprite.sass')
     end
   end
 
   describe "dest_stylesheet_path for scss" do
     it "should get sass_sprite css path for a directory" do
-      Sprite.new("engine" => "scss").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite')).should == File.join(STYLESHEET_PATH, 'css_sprite.scss')
+      expect(Sprite.new("engine" => "scss").dest_stylesheet_path(File.join(IMAGE_PATH, 'css_sprite'))).to eq File.join(STYLESHEET_PATH, 'css_sprite.scss')
     end
   end
 
   describe "get_image" do
     it "should get a image" do
-      @sprite.get_image(File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')).class.should == MiniMagick::Image
+      expect(@sprite.get_image(File.join(IMAGE_PATH, 'css_sprite/gmail_logo.png')).class).to eq MiniMagick::Image
     end
   end
 
   describe "image_properties" do
     it "should get image properties" do
       image_path = File.join(@directory_path, 'gmail_logo.png')
-      @sprite.image_properties(image_path, @directory_path).should == {:name => 'gmail_logo', :width => 103, :height => 36}
+      expect(@sprite.image_properties(image_path, @directory_path)).to eq({:name => 'gmail_logo', :width => 103, :height => 36})
     end
 
     it "should get a image with parent" do
       image_path = File.join(@directory_path, 'icons/twitter_icon.png')
-      @sprite.image_properties(image_path, @directory_path).should == {:name => 'icons/twitter_icon', :width => 14, :height => 14}
+      expect(@sprite.image_properties(image_path, @directory_path)).to eq({:name => 'icons/twitter_icon', :width => 14, :height => 14})
     end
   end
 end
