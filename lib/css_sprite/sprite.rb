@@ -92,28 +92,26 @@ class Sprite
     last_y = 0
     sources.each do |source|
       source_image = get_image(source)
-      property =
       x = 0
       y = last_y
       results << image_properties(source, directory).merge(:x => x, :y => y)
       last_y = y + source_image[:height]
     end
 
-    command = MiniMagick::CommandBuilder.new('montage')
-    {
-      'tile' => '1x',
-      'geometry' => '+0+0',
-      'background' => 'None',
-      'gravity' => 'West',
-      'format' => @config['format'] || 'PNG'
-    }.each do |cmd, opt|
-      command.add_command cmd, opt
-    end
-    sources.each do |source|
-      command.push source
-    end
-    command.push(dest_image_path)
-    MiniMagick::Image.new(nil).run(command)
+    command = MiniMagick::Tool::Montage.new
+    sources.each { |source| command << source }
+    command << '-tile'
+    command << '1x'
+    command << '-geometry'
+    command << '+0+0'
+    command << '-background'
+    command << 'None'
+    command << '-gravity'
+    command << 'West'
+    command << '-format'
+    command << @config['format'] || 'PNG'
+    command << dest_image_path
+    command.call
     results
   end
 
